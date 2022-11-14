@@ -1,0 +1,8 @@
+Child_2 has recieved the following files:
+	1
+	g32.txt
+	0]]
+	g13.txt
+	g8.txt
+	f17.txt
+	h35.txt

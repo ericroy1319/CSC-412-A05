@@ -1,0 +1,9 @@
+Child_1 has recieved the following files:
+	g3.txt
+	g53.txt
+	f3.txt
+	a43.txt
+	f162.txt
+	a3.txt
+	0
+	a23.txt
