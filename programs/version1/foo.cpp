@@ -55,3 +55,43 @@ void file_names(std::string dir_path, std::vector<std::string> *fnames){
     }
 }
 
+void split_work(std::vector<std::vector<std::string>> *assigned_work, 
+std::vector<std::string> *f_names, int child_count){
+    int f_count = f_names->size();
+    int split = f_count / child_count;
+    int extra_work = f_count % child_count;
+    int idx = 0; 
+    std::cout << "\t split == "<< split << std::endl;
+    std::cout << "\t extra_work == "<< extra_work << std::endl;
+    for(int i = 0; i < child_count; i++){
+        int j;
+        std::vector<std::string> temp;
+        (*assigned_work).push_back(temp);
+        for(j = 0 ; j < split; j ++){
+            // add the normal work load for child 
+            (*assigned_work)[i].push_back((*f_names)[idx]);
+            idx++;
+        }
+        // assign extra work if there is a remainder 
+        if(extra_work > 0){
+            (*assigned_work)[i].push_back((*f_names)[idx]);
+            extra_work--;
+            idx++;
+        }
+    }
+
+}
+
+// print function for showing what files intially go to which children 
+void print_initial_split(std::vector<std::vector<std::string>> *the_split){
+    std::cout<<std::endl;
+    for(int i = 0; i < (*the_split).size(); i++){
+        std::cout<<"Child <"<<i+1 << "> will get: \t";
+        for(int j = 0; j < (*the_split)[i].size(); j++){
+            
+            std::cout << (*the_split)[i][j] << " ";
+        }
+        std::cout<<"\n";
+    }
+
+}
