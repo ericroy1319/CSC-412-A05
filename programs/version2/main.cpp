@@ -41,10 +41,12 @@ int main(int argc, const char* argv[]){
 
     std::vector<std::string> f_names;
     file_names(data_path, &f_names);
+    std::vector<std::string> f_paths;
+    file_paths(data_path, &f_paths);
     std::vector<std::vector<std::string> > assigned_work;
-    split_work(&assigned_work,&f_names,child_count);   
+    split_work(&assigned_work,&f_paths,child_count);   
     // print the result of the splitting of work 
-    // print_initial_split(&assigned_work);
+    // print_split(&assigned_work);
 
     //-------------------------------------------------//
     //              Create Children                    //
@@ -58,7 +60,15 @@ int main(int argc, const char* argv[]){
         if(pid != 0){
             pid = fork();
             if(pid ==0){
-                child_output(&assigned_work[i],i+1,scrap_path);
+                // child to parent communication vector for redistribution of work
+                std::vector<std::vector<std::string>> redistributed_work;
+                // set the right size for first vector in 2D vector 
+                for(int i = 0; i < child_count; i++){
+                    std::vector<std::string> temp;
+                    redistributed_work.push_back(temp);
+                }
+                determine_process_location(&assigned_work[i], &redistributed_work, i+1, child_count);
+                child_output_v2(&redistributed_work,scrap_path);
             }
         }
     }
