@@ -82,6 +82,13 @@ std::vector<std::string> *f_names, int child_count){
 
 }
 
+void child_output(std::vector<std::string> *segment_of_work, int c_num){
+    std::cout<<"Child_"<<c_num<<" has recieved the following files:\n";
+    for(int i = 0; i < segment_of_work->size(); i++){
+        std::cout<<"\t"<<(*segment_of_work)[i]<<"\n";
+    }
+}
+
 // print function for showing what files intially go to which children 
 void print_initial_split(std::vector<std::vector<std::string>> *the_split){
     std::cout<<std::endl;

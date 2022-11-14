@@ -58,7 +58,7 @@ int main(int argc, const char* argv[]){
         if(pid != 0){
             pid = fork();
             if(pid ==0){
-                std::cout<<"child_"<< i+1 << " created!"<<std::endl;
+                child_output(&assigned_work[i],i+1);
             }
         }
     }
