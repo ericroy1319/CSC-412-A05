@@ -3,7 +3,6 @@ the parent proccess needs to create, the second argument passed will
 be the directory path to the data and the last argument passed will be 
 the path to a scrap folder*/ 
 #include "foo.cpp"
-
 int main(int argc, const char* argv[]){
     //-------------------------------------------------//
     //         Store Arguments into variables          //
