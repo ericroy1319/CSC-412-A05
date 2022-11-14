@@ -61,8 +61,8 @@ std::vector<std::string> *f_names, int child_count){
     int split = f_count / child_count;
     int extra_work = f_count % child_count;
     int idx = 0; 
-    std::cout << "\t split == "<< split << std::endl;
-    std::cout << "\t extra_work == "<< extra_work << std::endl;
+    // std::cout << "\t split == "<< split << std::endl;
+    // std::cout << "\t extra_work == "<< extra_work << std::endl;
     for(int i = 0; i < child_count; i++){
         int j;
         std::vector<std::string> temp;
@@ -82,11 +82,24 @@ std::vector<std::string> *f_names, int child_count){
 
 }
 
-void child_output(std::vector<std::string> *segment_of_work, int c_num){
-    std::cout<<"Child_"<<c_num<<" has recieved the following files:\n";
+void child_output(std::vector<std::string> *segment_of_work, int c_num, std::string o_path){
+    // WRITE TO SCRAP FOLDER
+    std::string child = "/child_";
+    std::string num = std::to_string(c_num);
+    std::string f_type = ".txt";
+    std::string f_name = child + num + f_type;
+    std::string output_path = o_path + f_name;
+    std::ofstream CHILD(output_path);
+    CHILD << "Child_"<<c_num<<" has recieved the following files:\n";
     for(int i = 0; i < segment_of_work->size(); i++){
-        std::cout<<"\t"<<(*segment_of_work)[i]<<"\n";
+        CHILD<<"\t"<<(*segment_of_work)[i]<<"\n";
     }
+    CHILD.close();
+    // STDOUT
+    // std::cout<<"Child_"<<c_num<<" has recieved the following files:\n";
+    // for(int i = 0; i < segment_of_work->size(); i++){
+    //     std::cout<<"\t"<<(*segment_of_work)[i]<<"\n";
+    // }
 }
 
 // print function for showing what files intially go to which children 

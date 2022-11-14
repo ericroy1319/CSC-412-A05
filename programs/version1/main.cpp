@@ -44,7 +44,7 @@ int main(int argc, const char* argv[]){
     std::vector<std::vector<std::string> > assigned_work;
     split_work(&assigned_work,&f_names,child_count);   
     // print the result of the splitting of work 
-    print_initial_split(&assigned_work);
+    // print_initial_split(&assigned_work);
 
     //-------------------------------------------------//
     //              Create Children                    //
@@ -58,7 +58,7 @@ int main(int argc, const char* argv[]){
         if(pid != 0){
             pid = fork();
             if(pid ==0){
-                child_output(&assigned_work[i],i+1);
+                child_output(&assigned_work[i],i+1,scrap_path);
             }
         }
     }
