@@ -72,7 +72,7 @@ int main(int argc, const char* argv[]){
     int parent;
     while((parent=wait(NULL))>0);
     if(pid != 0){
-        std::cout<<"This should print only once from the root parent"<<std::endl;
+        parent_output(scrap_path);
     }
 
     return 0;

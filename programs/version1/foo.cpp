@@ -102,6 +102,17 @@ void child_output(std::vector<std::string> *segment_of_work, int c_num, std::str
     // }
 }
 
+void parent_output(std::string o_path){
+    // WRITE TO SCRAP FOLDER
+    std::string parent = "/parent";
+    std::string f_type = ".txt";
+    std::string f_name = parent + f_type;
+    std::string output_path = o_path + f_name;
+    std::ofstream PARENT(output_path);
+    PARENT << "This is the parent output file\n";
+    PARENT.close();
+}
+
 // print function for showing what files intially go to which children 
 void print_initial_split(std::vector<std::vector<std::string>> *the_split){
     std::cout<<std::endl;
