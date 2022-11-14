@@ -53,6 +53,15 @@ int main(int argc, const char* argv[]){
     All child processes write one file named child <index>.txt 
     (e.g. child 1.txt,child 2.tx, etc.) into the scrap folder 
     (the content of the file is immaterial in this version)*/
+    int pid = getpid();
+    for(int i = 0; i < child_count; i++){
+        if(pid != 0){
+            pid = fork();
+            if(pid ==0){
+                std::cout<<"child_"<< i+1 << " created!"<<std::endl;
+            }
+        }
+    }
 
     //-------------------------------------------------//
     //             Wait for Children                   //
@@ -60,6 +69,11 @@ int main(int argc, const char* argv[]){
     /* The parent/dispatcher process waits for all child 
     processes to terminate,then writes an output file 
     in the scrap folder as well, then terminates. */ 
-    
+    int parent;
+    while((parent=wait(NULL))>0);
+    if(pid != 0){
+        std::cout<<"This should print only once from the root parent"<<std::endl;
+    }
+
     return 0;
 }
