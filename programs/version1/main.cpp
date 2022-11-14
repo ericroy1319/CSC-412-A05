@@ -7,6 +7,10 @@ int main(int argc, const char* argv[]){
     //-------------------------------------------------//
     //         Store Arguments into variables          //
     //-------------------------------------------------//
+    /* It receives as arguments the number n of child 
+    processes to create, the path to the data directory,
+    and the path to a scrap folder.*/ 
+
     int child_count = std::stoi(argv[1]);
     std::string data_path = argv[2]; 
     std::string scrap_path = argv[3];
@@ -15,6 +19,10 @@ int main(int argc, const char* argv[]){
     //-------------------------------------------------//
     //             Create scrap folder                 //
     //-------------------------------------------------//
+    /*The parent process should create the scrap folder if 
+    it doesn’t already exist, and make sure that it 
+    is empty otherwise.*/ 
+
     // check to see if directory exists 
     bool is_there = path_exist(scrap_path);
     if(is_there == false){
@@ -27,8 +35,10 @@ int main(int argc, const char* argv[]){
     //-------------------------------------------------//
     //             Split the work                      //
     //-------------------------------------------------//
-    /* Take the number of files, and the number of child process
-    and split the work as close to evenly as possible*/ 
+    /* It splits the work into n more or less equal parts: 
+    It determines that (future) Child k will look at files 
+    from Index iinf to Index isup on the file list. */ 
+
     std::vector<std::string> f_names;
     file_names(data_path, &f_names);
     std::vector<std::vector<std::string> > assigned_work;
@@ -39,6 +49,17 @@ int main(int argc, const char* argv[]){
     //-------------------------------------------------//
     //              Create Children                    //
     //-------------------------------------------------//
+    /* It creates child processes to work on the files. 
+    All child processes write one file named child <index>.txt 
+    (e.g. child 1.txt,child 2.tx, etc.) into the scrap folder 
+    (the content of the file is immaterial in this version)*/
 
+    //-------------------------------------------------//
+    //             Wait for Children                   //
+    //-------------------------------------------------//
+    /* The parent/dispatcher process waits for all child 
+    processes to terminate,then writes an output file 
+    in the scrap folder as well, then terminates. */ 
+    
     return 0;
 }
