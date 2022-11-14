@@ -98,48 +98,7 @@ std::vector<std::string> *f_names, int child_count){
 
 }
 
-void child_output(std::vector<std::string> *assigned_segment, int c_num, std::string o_path){
-    // WRITE TO SCRAP FOLDER
-    std::string child = "/child_";
-    std::string num = std::to_string(c_num);
-    std::string f_type = ".txt";
-    std::string f_name = child + num + f_type;
-    std::string output_path = o_path + f_name;
-    // check to see if file exists. 
-    bool file_exists;
-    struct stat buffer;
-    if(stat(output_path.c_str(),&buffer) != -1){
-        file_exists = true;
-    }else{
-        file_exists = false;
-    }
-    
-    // if file does not exist create and write to it 
-    if(file_exists == false){
-        std::ofstream CHILD(output_path);
-        CHILD << "Child_"<<c_num<<" has recieved the following files:\n";
-        for(int i = 0; i < assigned_segment->size(); i++){
-            CHILD<<"\t"<<(*assigned_segment)[i]<<"\n";
-        }
-        CHILD.close();
-    }
-    // if file does exist append to it
-    else{
-        std::ofstream CHILD;
-        CHILD.open(output_path, std::ios_base::app);
-        for(int i = 0; i < assigned_segment->size(); i++){
-            CHILD<<"\t"<<(*assigned_segment)[i]<<"\n";
-        }
-        CHILD.close();
-    }
-    // STDOUT
-    // std::cout<<"Child_"<<c_num<<" has recieved the following files:\n";
-    // for(int i = 0; i < segment_of_work->size(); i++){
-    //     std::cout<<"\t"<<(*segment_of_work)[i]<<"\n";
-    // }
-}
-
-void child_output_v2(std::vector<std::vector<std::string>> *redis_work, std::string o_path){
+void child_output(std::vector<std::vector<std::string>> *redis_work, std::string o_path){
     // WRITE TO SCRAP FOLDER
     for(int i =0; i < redis_work->size(); i++){
         std::string child = "/child_";

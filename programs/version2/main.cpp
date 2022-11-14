@@ -68,7 +68,7 @@ int main(int argc, const char* argv[]){
                     redistributed_work.push_back(temp);
                 }
                 determine_process_location(&assigned_work[i], &redistributed_work, i+1, child_count);
-                child_output_v2(&redistributed_work,scrap_path);
+                child_output(&redistributed_work,scrap_path);
             }
         }
     }
