@@ -117,7 +117,7 @@ void child_output(std::vector<std::vector<std::string>> *redis_work, std::string
         // if file does not exist create and write to it 
         if(file_exists == false){
         std::ofstream CHILD(output_path);
-        CHILD << "Child_"<<i+1<<" has recieved the following files:\n";
+        CHILD << "Child_"<<i+1<<" is assigned the following files:\n";
         for(int j = 0; j < (*redis_work)[i].size(); j++){
             CHILD<<"\t"<<(*redis_work)[i][j]<<"\n";
         }
@@ -135,9 +135,6 @@ void child_output(std::vector<std::vector<std::string>> *redis_work, std::string
     }   
 }
     
-
-
-
 void determine_process_location(std::vector<std::string> *assigned_segment, 
 std::vector<std::vector<std::string>> *redis_work, int c_num, int c_count){
     /* loop through assigned segement of files, determine where they need go,
