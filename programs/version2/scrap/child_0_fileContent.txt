@@ -1,0 +1,7 @@
+1 12
+1 10 	return 0;
+1 6 int main(int argc, char* argv[])
+1 11 }
+1 7 {
+1 9 	printf("CSC412 - Programming assignment 04\n");
+1 8 	printf("Hello, World!\n");

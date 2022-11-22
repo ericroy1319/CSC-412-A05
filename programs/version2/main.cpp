@@ -4,6 +4,8 @@ be the directory path to the data and the last argument passed will be
 the path to a scrap folder*/ 
 #include "foo.cpp"
 using namespace std;
+#define BUFF_SIZE 1024
+
 int main(int argc, const char* argv[]){
     //-------------------------------------------------//
     //         Store Arguments into variables          //
@@ -72,7 +74,7 @@ int main(int argc, const char* argv[]){
     }
 
     //-------------------------------------------------//
-    //              Create Children                    //
+    //            Create Children Gen 1                //
     //-------------------------------------------------//
     /* It creates child processes to work on the files. 
     All child processes write one file named child <index>.txt 
@@ -85,14 +87,20 @@ int main(int argc, const char* argv[]){
         if(pid != 0){
             pid = fork();
             if(pid ==0){
-                  cout << "[DEBUG] child_" << i << " initially recieves " << assigned_work[i].size() << " files to process" << endl;
+                
+                // cout << "[DEBUG] child_" << i << " initially recieves " << assigned_work[i].size() << " files to process" << endl;
                 // cout << "\tChild_"<<i<<" created" << endl;
                 // read from assigned segment of work and determine what need 
                 // to go back to the parent via pipe for redistribution 
                 std::string send_to_process;
                 std::vector<std::string> process_files;
-                close(fd_ptc[i][1]);
-                close(fd_ctp[0]);
+                if(close(fd_ptc[i][1]) == -1){
+                    cout << "ERROR 1" << endl;
+                };
+                if(close(fd_ctp[0]) == -1){
+                    cout << "ERROR 2" << endl;
+                };
+    
                 //******************************//
                 //     Write to Parent Pipe     // 
                 //******************************//
@@ -104,78 +112,105 @@ int main(int argc, const char* argv[]){
                     // if file does not belong to self for processing, pass it back to parent
                     
                     if(stoi(send_to_process) != i){
-                    //    cout << "[DEBUG] " << i << " is NOT keeping " <<  assigned_work[i][c] << endl;
-                        // cout << "current file belongs too " << i << " need to go to "<<send_to_process << endl;
-                        // attach correct process to front of file path 
-                        std::string message = send_to_process + " " + assigned_work[i][c];
-                        
-                        // write to parent 
+                        // <ACTION><PID><MESSAGE_LENGTH><MESSAGE>
+                        char action = 'R';
                         // get legnth of file path 
-                        int message_len = message.size();
-         
+                        // cout << "[DEBUG] child_" << i << " is sending out " << assigned_work[i][c] <<endl;
+                        int message_len = assigned_work[i][c].size();
+                        // attach correct process to front of file path 
+                        std::string message = action + send_to_process + " " + std::to_string(message_len) + " " + assigned_work[i][c];
+                    
                         // create a char array to hold file path 
-                        char out_message[message_len + 1];
+                        char out_message[BUFF_SIZE];
                         
                         // copy string to charcter array 
                         stpcpy(out_message, message.c_str());
-                 
-                        // cout << "\tChild_"<<i<<" writing to parent:  " << out_message << endl;
-                        // first send the lenght of the message to the parent 
-                        write(fd_ctp[1], &message_len, sizeof(int));
-                        // next send the message to the parent 
-                        write(fd_ctp[1], &out_message, message_len+1);
+                        
+                        // write to parent 
+                        write(fd_ctp[1], &out_message, BUFF_SIZE);
+                        // cout << "[DEBUG] child_" << i << " is sending out " << out_message <<endl;
+
                     }else{
                         // if file does belong to self, save for processing 
-                        // add file path to keep list for processing
-                        // cout << "[DEBUG] " << i << " is keeping " <<  assigned_work[i][c] << endl;
+                        // cout << "[DEBUG] child_" << i << " is holding onto " << assigned_work[i][c] <<endl;
                         process_files.push_back(assigned_work[i][c]); 
                     }
                 }
                 // once all of the messages have been send, send terminating message
-                int terminator = -1;
-                write(fd_ctp[1], &terminator, sizeof(int));
-                // cout << "[DEBUG] Terminator should be sent twice " <<  endl;
+                char terminator = 'T';
+                write(fd_ctp[1], &terminator, BUFF_SIZE);
+                // cout << "[DEBUG] child_" << i << " is sending out " << terminator <<endl;
                 // close writing end of pipe 
                 if(close(fd_ctp[1]) == -1){
-                    cout << "ERROR" << endl;
+                    cout << "ERROR 3" << endl;
+                    exit(50);
                 };
 
                 //******************************//
                 //     Read From Child Pipe     // 
                 //******************************//
-                // cout << "\tChild_"<<i<<" reading from parent" << endl;
                 bool keepReading = true;
                
                 while(keepReading == true){
-                    // cout << "[DEBUG] child_" << i << "  READIING FROM PARENT"<<endl;
-                    int message_len;
-                    // get the length of the inbound message 
-                    // cout << "[DEBUG] HERE" << endl;
-                    read(fd_ptc[i][0], &message_len, sizeof(int));
-                    // cout <<"[DEBUG] " << message_len << endl;
-                    if(message_len < 0){
+                    
+                    char read_pipe[BUFF_SIZE];
+                    read(fd_ptc[i][0], &read_pipe, BUFF_SIZE);
+                    // cout << "[DEBUG] child_" << i << " is reading " << read_pipe <<endl;
+
+                    // check for terminating value 
+                    if(read_pipe[0] == 'T'){
+                        // cout << "[DEBUG] child_" << i << " has recieved the terminator" <<endl;
                         keepReading = false;
                         // close parent to child pipe [reading]
                         close(fd_ptc[i][0]);
-                        //  cout << "[DEBUG] child_" << i << "  STOP READING FROM PARENT"<<endl;;
                         break;
                     }else{
-                        // create a container for the inbound message 
-                        
-                        char in_message[message_len+1];
-                        // read the inbound message 
-                        read(fd_ptc[i][0], &in_message, message_len+1);
-                        // cout << "[DEBUG] " << in_message << endl;
-                        // store message in process file vector 
-                        std::string message;
-                        for(int c = 0; c < message_len; c++){
-                            message += in_message[c];
+                        // <ACTION><PID><MESSAGE_LENGTH><MESSAGE>
+                        // index to keep track where we are in pipe message
+                        int idx = 1; 
+                        // charcter used to read message 
+                        char ch;
+                        bool continueReading = true;
+                        // extract destination process 
+                        std::string c_num;
+                        while(continueReading == true){
+                            ch = read_pipe[idx];
+                            if(ch == ' '){
+                                idx++;
+                                continueReading = false;
+                                break;
+                            }else{
+                                c_num += ch;
+                                idx++;
+                            }
                         }
-                        // cout << "\tChild_"<<i<<" has recieved value: "<< message << " from parent!"<<endl;
+                        // extract the message length 
+                        // reset loop control
+                        continueReading = true;
+                        std::string message_len;
+                        while(continueReading == true){
+                            ch = read_pipe[idx];
+                            if(ch == ' '){
+                                idx++;
+                                continueReading = false;
+                                break;
+                            }else{
+                                message_len += ch;
+                                idx++;
+                            }
+                        }
+                        // extract message 
+                        std::string message;
+                        int len = stoi(message_len);
+                        for(int c = 0; c < len; c++){
+                            ch = read_pipe[idx];
+                            message += ch;
+                            idx++;
+                        }
                         process_files.push_back(message);
                     }
                 }
-                cout << "[DEBUG] child_" << i << " will process " << process_files.size() << " files: " << endl;
+                // cout << "[DEBUG] child_" << i << " will process " << process_files.size() << " files: " << endl;
                 // function used to output to scrap folder 
                 child_output(&process_files, &scrap_path, &i);
                 return 0;
@@ -183,91 +218,127 @@ int main(int argc, const char* argv[]){
                 //******************************//
                 //     Read from Parent Pipe    // 
                 //******************************//
-                //  cout << "Parent is reading from pipes"<<endl;
-                // incoming message:  <process # > < " " > < file_path > 
                 bool keepReading = true;
                 while(keepReading == true){
-                    int message_len;
-                    // read in message length from child 
-                    read(fd_ctp[0], &message_len, sizeof(int));
-                    if(message_len == -1){
-                        // cout << "Parent recieved terminating code" << endl;
+                    // <ACTION><PID><MESSAGE_LENGTH><MESSAGE>
+                    char read_pipe[BUFF_SIZE];
+                    read(fd_ctp[0], &read_pipe, BUFF_SIZE);
+
+                    // check for terminating value 
+                    if(read_pipe[0] == 'T'){
+                        keepReading = false;
                         terminate_IPC--;
-                        keepReading=false;
                         break;
                     }else{
-                        // container to store message
-                        char in_message[message_len+1];
-                        // read in message from child 
-                        read(fd_ctp[0], &in_message, message_len+1);
+                        // <ACTION><PID><MESSAGE_LENGTH><MESSAGE>
+                        // index to keep track where we are in pipe message
+                        int idx = 1; 
+                        // charcter used to read message 
                         char ch;
-                        int idx=0;
-                        bool is_true = true;
+                        bool continueReading = true;
+                        // extract destination process 
                         std::string destination;
-                        std::string fpath;
-                        // cout << " in_message ==" << in_message <<endl;
-                        while(is_true == true){
-                            ch = in_message[idx];
+                        while(continueReading == true){
+                            ch = read_pipe[idx];
                             if(ch == ' '){
-                                idx++; 
-                                is_true = false;
+                                idx++;
+                                continueReading = false;
                                 break;
                             }else{
-                                destination += ch; 
+                                destination += ch;
                                 idx++;
                             }
                         }
-                        // cout << "The idx should be 2 " << idx << endl;
-                        is_true = true;
-                        while(is_true == true){
-                           
-                            ch = in_message[idx];
-                            // cout << ch << endl;
-                            if(ch == '\0'){
-                                
-                                is_true = false;
+                        // extract the message length 
+                        // reset loop control
+                        continueReading = true;
+                        std::string message_len;
+                        while(continueReading == true){
+                            ch = read_pipe[idx];
+                            if(ch == ' '){
+                                idx++;
+                                continueReading = false;
                                 break;
                             }else{
-                                fpath += ch;
+                                message_len += ch;
                                 idx++;
                             }
+                        }
+                        // extract message 
+                        std::string message;
+                        int len = stoi(message_len);
+                        for(int c = 0; c < len; c++){
+                            ch = read_pipe[idx];
+                            message += ch;
+                            idx++;
                         }
 
                         //******************************//
                         //    Write to Children Pipes   // 
                         //******************************//
-                        cout << "Parent will send to Child_" << destination << " the path: " << fpath << endl;
-                        char message[fpath.size()+1];
-                        strcpy(message, fpath.c_str());
-                        write(fd_ptc[stoi(destination)][1], &message_len, sizeof(int));
-                        write(fd_ptc[stoi(destination)][1], &message, message_len+1);
+                        // <ACTION><PID><MESSAGE_LENGTH><MESSAGE>
+                        char action = 'R';
+                        std::string temp = action+destination+" "+message_len+" "+message; 
+                        char out_message[BUFF_SIZE];
+                        strcpy(out_message, temp.c_str());
+                        // cout << "[DEBUG] PARENT" << " is sending child_" << destination <<" "<< out_message <<endl;
+                        write(fd_ptc[stoi(destination)][1], &out_message, BUFF_SIZE);
                     }
                 }
                 if(terminate_IPC == 0) {
                     // send terminator value to all children 
-                    int end = -1;
+                    char end = 'T';
                     for(int k = 0; k < child_count; k++){
-                        write(fd_ptc[k][1], &end, sizeof(int));
+                        write(fd_ptc[k][1], &end, BUFF_SIZE);
                         // close parent to child pipe [write] 
                         close(fd_ptc[k][1]);
                     }
                 }
             }
+      
         }
     }
 
     //-------------------------------------------------//
-    //             Wait for Children                   //
+    //          Wait for Children Gen 1                //
     //-------------------------------------------------//
     /* The parent/dispatcher process waits for all child 
     processes to terminate,then writes an output file 
     in the scrap folder as well, then terminates. */ 
     int parent;
     while((parent=wait(NULL))>0);
-    if(pid != 0){
-        cout << "All Children Processes Are Terminated" << endl;
-        parent_output(scrap_path);
-    }
 
+
+
+    // cout << "\nonly print 1 time\n " << endl;
+    if(pid != 0){
+        // cout << "All Children Processes Are Terminated" << endl;
+        // get file paths of 1st gen children output 
+        std::vector<std::string> child_output_paths;
+        file_paths(scrap_path, &child_output_paths);
+        //-------------------------------------------------//
+        //            Create Children Gen 2                //
+        //-------------------------------------------------//
+        // cout << "[DEBUG] the Child Count is " << child_count << endl;
+        for(int i = 0; i < child_count; i++){
+            if(pid != 0){
+                pid = fork();
+                if(pid ==0){
+                    /* Child i opens its assigned folder from scrap,
+                    it reads the file path listed, opens the file, 
+                    reads the contents of the file, and then writes 
+                    to a new file the content. The process will loop 
+                    though all of the file paths and append its contents 
+                    to the new file. */ 
+                    // create new output file
+                    // cout << "[DEBUG] The Scrap path for Gen2 Children are: " << child_output_paths[i] << endl;
+                    second_child_output(scrap_path, child_output_paths[i],i);
+                    return 0;
+                }else{
+                    // parent does work 
+                }   
+            }
+        }
+    }
     return 0;
 }

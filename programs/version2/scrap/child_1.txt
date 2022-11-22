@@ -1,6 +1,7 @@
-Child_1 has recieved the following files:
-	/Users/ericroy/Documents/uri/Fall_2022/CSC-412/Data-Sets/Data-Set-1/g3.txt
-	/Users/ericroy/Documents/uri/Fall_2022/CSC-412/Data-Sets/Data-Set-1/f3.txt
-	/Users/ericroy/Documents/uri/Fall_2022/CSC-412/Data-Sets/Data-Set-1/f162.txt
-	/Users/ericroy/Documents/uri/Fall_2022/CSC-412/Data-Sets/Data-Set-1/g13.txt
-	/Users/ericroy/Documents/uri/Fall_2022/CSC-412/Data-Sets/Data-Set-1/h35.txt
+/Users/ericroy/Documents/uri/Fall_2022/CSC-412/Data-Sets/Data-Set-1/a23.txt
+/Users/ericroy/Documents/uri/Fall_2022/CSC-412/Data-Sets/Data-Set-1/g32.txt
+/Users/ericroy/Documents/uri/Fall_2022/CSC-412/Data-Sets/Data-Set-1/g8.txt
+/Users/ericroy/Documents/uri/Fall_2022/CSC-412/Data-Sets/Data-Set-1/f17.txt
+/Users/ericroy/Documents/uri/Fall_2022/CSC-412/Data-Sets/Data-Set-1/g53.txt
+/Users/ericroy/Documents/uri/Fall_2022/CSC-412/Data-Sets/Data-Set-1/a43.txt
+/Users/ericroy/Documents/uri/Fall_2022/CSC-412/Data-Sets/Data-Set-1/a3.txt

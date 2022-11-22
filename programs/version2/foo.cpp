@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+using namespace std;
 
 // function used determine if directory exists 
 bool path_exist(const std::string &str){
@@ -137,7 +138,7 @@ std::vector<std::string> *f_names, int child_count){
     }
 
 }
-
+// First Generation of Child Output  
 void child_output(std::vector<std::string>* file_paths, std::string* write_to_path, int* c_num){
     // WRITE TO SCRAP FOLDER
     int len = file_paths->size();
@@ -157,21 +158,73 @@ void child_output(std::vector<std::string>* file_paths, std::string* write_to_pa
     // if file does not exist create and write to it 
     if(file_exists == false){
         std::ofstream CHILD(outputPath);
-        CHILD << "Child_"<<c_num<<" is assigned the following files:\n";
+        // CHILD << "Child_"<<c_num<<" is assigned the following files:\n";
         for(int i = 0; i < len; i++){
-            CHILD<<"\t"<<(*file_paths)[i]<<"\n";
+            CHILD<<(*file_paths)[i]<<"\n";
         }
         CHILD.close();
     }else{
         std::ofstream CHILD;
         CHILD.open(outputPath, std::ios_base::app);
         for(int i = 0; i < len;i++){
-            CHILD<<"\t"<<(*file_paths)[i]<<"\n";
+            CHILD<<(*file_paths)[i]<<"\n";
         }
         CHILD.close();
     }
 }
-    
+
+void get_content(std::string fpath, std::string* content){
+    std::ifstream file;
+    file.open(fpath);
+    if(file.is_open() == false){
+        cout << "ERROR" << endl;
+    }
+    std::string line; getline(file,line);
+    (*content) = line;
+    file.close();
+}
+// Second Gerneration of Child Output 
+void second_child_output(std::string scrap_path, std::string read_from_file, int c_num){
+    // open file and read content, write to path 
+    std::ifstream file;
+    std::string content;
+    std::string child = "/child_" + std::to_string(c_num) + "_fileContent";
+    std::string fileType = ".txt";
+    std::string fileName = child+fileType;
+    std::string outputPath = scrap_path + fileName;
+    file.open(read_from_file);
+    // iterate through file and get each line
+    for(string line; getline(file,line);){
+        // pull the file path from the file 
+        // cout << line << endl;
+        get_content(line, &content);
+        // WRITE TO SCRAP FOLDER
+        // check to see if file exists 
+        bool file_exists;
+        struct stat buffer;
+        if(stat(outputPath.c_str(),&buffer) != -1){
+            file_exists = true;
+        }else{
+            file_exists = false;
+        }
+        // if file does not exist create and write to it 
+        if(file_exists == false){
+            std::ofstream CHILD(outputPath);
+            cout << "[DEBUG] Writing Content " << content << endl;
+            CHILD << content << "\n";
+            CHILD.close();
+        }else{
+            std::ofstream CHILD;
+            CHILD.open(outputPath, std::ios_base::app);
+            CHILD << content << "\n";
+            cout << "[DEBUG] Writing Content " << content << endl;
+            CHILD.close();
+        }    
+    }
+}    
+
+
+
 void determine_process_location(std::string *file_path, std::string *send_to){
     /* loop through assigned segement of files, determine where they need go,
     place them into the correct index of redistributed_work vector, and this 
@@ -186,6 +239,7 @@ void determine_process_location(std::string *file_path, std::string *send_to){
     // store string segment into process
     // the first segment will tell you correct child process 
     s >> (*send_to);
+    file.close();
 }
 
 void parent_output(std::string o_path){
