@@ -28,4 +28,4 @@ c_num=$((c_num+1))
 # c_num is the number of children 
 # $1 is the path to the data folder 
 # $2 is the path to the scrap folder 
-./scripts/build02.sh $c_num $1 $2
+./scripts/build15.sh $c_num $1 $2

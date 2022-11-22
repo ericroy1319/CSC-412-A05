@@ -4,14 +4,11 @@
 #include <vector>
 #include <sstream>
 #include <filesystem>
-#include <cstring>
-#include <cstdlib>
 
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include <fcntl.h>
 
 
 // function used determine if directory exists 
@@ -70,43 +67,6 @@ void file_paths(std::string dir_path, std::vector<std::string> *fpaths){
             if(entry.path().extension().string() == ".txt"){
                 (*fpaths).push_back(entry.path());
             }
-        }
-    }
-}
-
-// convert a charcter array to a string
-void convert_to_string(std::string* str, char* arr, int len){
-    for(int c = 0; c < len; c++){
-        (*str) = (*str) + arr[c];
-    }
-    std::cout<<"\t" << str<<std::endl;
-}
-
-// function used to read message from child 
-void parse_message(char* arr, int len, std::string* send_to, std::string* fpath){
-    char ch;
-    int idx;
-    bool is_true = true;
-    while(is_true == true){
-        ch = arr[idx];
-        if(ch == ' '){
-            idx++; 
-            is_true = false;
-            break;
-        }else{
-            *send_to+= ch; 
-            idx++;
-        }
-    }
-    is_true = true;
-    while(is_true == true){
-        ch = arr[idx];
-        if(ch == '\0'){
-            is_true = false;
-            break;
-        }else{
-            fpath += ch;
-            idx++;
         }
     }
 }
@@ -175,20 +135,33 @@ void child_output(std::vector<std::vector<std::string>> *redis_work, std::string
     }   
 }
     
-void determine_process_location(std::string *file_path, std::string *send_to){
+void determine_process_location(std::vector<std::string> *assigned_segment, 
+std::vector<std::vector<std::string>> *redis_work, int c_num, int c_count){
     /* loop through assigned segement of files, determine where they need go,
     place them into the correct index of redistributed_work vector, and this 
     will be used to pipe to parent */
     std::ifstream file; 
-    // open file from filepath 
-    file.open(*file_path);
-    // get the first line from the file 
-    std::string line; getline(file,line);
-    // seperate the line by white space 
-    std::stringstream s(line);
-    // store string segment into process
-    // the first segment will tell you correct child process 
-    s >> (*send_to);
+    for(int i = 0; i < assigned_segment->size(); i++){
+        // open file from filepath 
+        file.open((*assigned_segment)[i]);
+        // get the first line from the file 
+        std::string line; getline(file,line);
+        // seperate the line by white space 
+        std::stringstream s(line);
+        std::string process;
+        // store string segment into process
+        // the first segment will tell you correct child process 
+        s >> process;
+        std::cout<<process<<std::endl;
+        // place file into correct process vector
+        /* NOTE: redis_work is a 2D vector, each vector element in the first 
+        vector represents a process with it's index as its process ID. The elements 
+        of the vector element will be the file paths to the correct files the process 
+        was intended to execute*/ 
+        (*redis_work)[std::stoi(process)].push_back((*assigned_segment)[i]);
+        file.close();
+    }
+
 }
 
 void parent_output(std::string o_path){
