@@ -138,41 +138,38 @@ std::vector<std::string> *f_names, int child_count){
 
 }
 
-void child_output(std::vector<std::vector<std::string>> *redis_work, std::string o_path){
+void child_output(std::vector<std::string>* file_paths, std::string* write_to_path, int* c_num){
     // WRITE TO SCRAP FOLDER
-    for(int i =0; i < redis_work->size(); i++){
-        std::string child = "/child_";
-        std::string num = std::to_string(i+1);
-        std::string f_type = ".txt";
-        std::string f_name = child + num + f_type;
-        std::string output_path = o_path + f_name;
-        // check to see if file exists. 
-        bool file_exists;
-        struct stat buffer;
-        if(stat(output_path.c_str(),&buffer) != -1){
-            file_exists = true;
-        }else{
-            file_exists = false;
-        }
-        // if file does not exist create and write to it 
-        if(file_exists == false){
-        std::ofstream CHILD(output_path);
-        CHILD << "Child_"<<i+1<<" is assigned the following files:\n";
-        for(int j = 0; j < (*redis_work)[i].size(); j++){
-            CHILD<<"\t"<<(*redis_work)[i][j]<<"\n";
+    int len = file_paths->size();
+    std::string child = "/child_" + std::to_string(*c_num);
+    std::string fileType = ".txt";
+    std::string fileName = child+fileType;
+    std::string outputPath = *write_to_path + fileName;
+
+    // check to see if file exists 
+    bool file_exists;
+    struct stat buffer;
+    if(stat(outputPath.c_str(),&buffer) != -1){
+        file_exists = true;
+    }else{
+        file_exists = false;
+    }
+    // if file does not exist create and write to it 
+    if(file_exists == false){
+        std::ofstream CHILD(outputPath);
+        CHILD << "Child_"<<c_num<<" is assigned the following files:\n";
+        for(int i = 0; i < len; i++){
+            CHILD<<"\t"<<(*file_paths)[i]<<"\n";
         }
         CHILD.close();
+    }else{
+        std::ofstream CHILD;
+        CHILD.open(outputPath, std::ios_base::app);
+        for(int i = 0; i < len;i++){
+            CHILD<<"\t"<<(*file_paths)[i]<<"\n";
         }
-        // file already exists
-        else{
-            std::ofstream CHILD;
-            CHILD.open(output_path, std::ios_base::app);
-            for(int j = 0; j < (*redis_work)[i].size();j++){
-                CHILD<<"\t"<<(*redis_work)[i][j]<<"\n";
-            }
-            CHILD.close();
-        }
-    }   
+        CHILD.close();
+    }
 }
     
 void determine_process_location(std::string *file_path, std::string *send_to){

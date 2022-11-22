@@ -176,6 +176,8 @@ int main(int argc, const char* argv[]){
                     }
                 }
                 cout << "[DEBUG] child_" << i << " will process " << process_files.size() << " files: " << endl;
+                // function used to output to scrap folder 
+                child_output(&process_files, &scrap_path, &i);
                 return 0;
             }else{
                 //******************************//
@@ -263,6 +265,7 @@ int main(int argc, const char* argv[]){
     int parent;
     while((parent=wait(NULL))>0);
     if(pid != 0){
+        cout << "All Children Processes Are Terminated" << endl;
         parent_output(scrap_path);
     }
 
