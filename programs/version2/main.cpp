@@ -4,7 +4,13 @@ be the directory path to the data and the last argument passed will be
 the path to a scrap folder*/ 
 #include "foo.cpp"
 using namespace std;
+
 #define BUFF_SIZE 256
+#define WRITE 1
+#define READ 0
+#define TERMINATE 'T'
+#define EXECUTE 'R' 
+#define CHILD 0
 
 int main(int argc, const char* argv[]){
    
@@ -89,9 +95,9 @@ int main(int argc, const char* argv[]){
 
     int pid = getpid();
     for(int i = 0; i < child_count; i++){
-        if(pid != 0){
+        if(pid != CHILD){
             pid = fork();
-            if(pid ==0){
+            if(pid == CHILD){
                 
                 // cout << "[DEBUG] child_" << i << " initially recieves " << assigned_work[i].size() << " files to process" << endl;
                 // cout << "\tChild_"<<i<<" created" << endl;
@@ -160,15 +166,15 @@ int main(int argc, const char* argv[]){
                 while(keepReading == true){
                     
                     char read_pipe[BUFF_SIZE];
-                    read(fd_ptc[i][0], &read_pipe, BUFF_SIZE);
+                    read(fd_ptc[i][READ], &read_pipe, BUFF_SIZE);
                     // cout << "[DEBUG] child_" << i << " is reading " << read_pipe <<endl;
 
                     // check for terminating value 
-                    if(read_pipe[0] == 'T'){
+                    if(read_pipe[READ] == TERMINATE){
                         // cout << "[DEBUG] child_" << i << " has recieved the terminator" <<endl;
                         keepReading = false;
                         // close parent to child pipe [reading]
-                        close(fd_ptc[i][0]);
+                        close(fd_ptc[i][READ]);
                         break;
                     }else{
                         // <ACTION><PID><MESSAGE_LENGTH><MESSAGE>
@@ -228,10 +234,10 @@ int main(int argc, const char* argv[]){
                 while(keepReading == true){
                     // <ACTION><PID><MESSAGE_LENGTH><MESSAGE>
                     char read_pipe[BUFF_SIZE];
-                    read(fd_ctp[0], &read_pipe, BUFF_SIZE);
+                    read(fd_ctp[READ], &read_pipe, BUFF_SIZE);
 
                     // check for terminating value 
-                    if(read_pipe[0] == 'T'){
+                    if(read_pipe[READ] == TERMINATE){
                         keepReading = false;
                         terminate_IPC--;
                         break;
@@ -283,21 +289,21 @@ int main(int argc, const char* argv[]){
                         //    Write to Children Pipes   // 
                         //******************************//
                         // <ACTION><PID><MESSAGE_LENGTH><MESSAGE>
-                        char action = 'R';
-                        std::string temp = action+destination+" "+message_len+" "+message; 
+                        // char action = 'R';
+                        std::string temp = EXECUTE+destination+" "+message_len+" "+message; 
                         char out_message[BUFF_SIZE];
                         strcpy(out_message, temp.c_str());
                         // cout << "[DEBUG] PARENT" << " is sending child_" << destination <<" "<< out_message <<endl;
-                        write(fd_ptc[stoi(destination)][1], &out_message, BUFF_SIZE);
+                        write(fd_ptc[stoi(destination)][WRITE], &out_message, BUFF_SIZE);
                     }
                 }
                 if(terminate_IPC == 0) {
                     // send terminator value to all children 
                     char end = 'T';
                     for(int k = 0; k < child_count; k++){
-                        write(fd_ptc[k][1], &end, BUFF_SIZE);
+                        write(fd_ptc[k][WRITE], &end, BUFF_SIZE);
                         // close parent to child pipe [write] 
-                        close(fd_ptc[k][1]);
+                        close(fd_ptc[k][WRITE]);
                     }
                 }
             }
@@ -318,7 +324,7 @@ int main(int argc, const char* argv[]){
 
 
     // cout << "\nonly print 1 time\n " << endl;
-    if(pid != 0){
+    if(pid != CHILD){
         // cout << "All Children Processes Are Terminated" << endl;
         // get file paths of 1st gen children output 
         std::vector<std::string> child_output_paths;
@@ -330,9 +336,9 @@ int main(int argc, const char* argv[]){
         //-------------------------------------------------//
         // cout << "[DEBUG] the Child Count is " << child_count << endl;
         for(int i = 0; i < child_count; i++){
-            if(pid != 0){
+            if(pid != CHILD){
                 pid = fork();
-                if(pid ==0){
+                if(pid == CHILD){
                     /* Child i opens its assigned folder from scrap,
                     it reads the file path listed, opens the file, 
                     reads the contents of the file, and then writes 
@@ -350,7 +356,7 @@ int main(int argc, const char* argv[]){
     
     int p;
     while((p=wait(NULL))>0);
-    if(pid!=0){
+    if(pid != CHILD){
 
         parent_output(scrap_path);
     }
