@@ -1,0 +1,156 @@
+4 703         printf("Cannot create image file %s \n", filePath);
+4 748     //------------------------------
+4 779     else
+4 680         }
+4 689 //  Description :
+4 713     if (info->type == RGBA32_RASTER)
+4 659             }
+4 634     if(info.type == RGBA32_RASTER)
+4 769         head[16] = 8 ;                          // Bits per pixel.
+4 707     //  are bad style when testing an integral value, but here only two values
+4 625     }
+4 649         else
+4 635     {
+4 697     //--------------------------------
+4 686 }   
+4 763         head[8]  = head[9] = 0 ;                // Image X origin.
+4 757         head[0]  = 0 ;                          // ID field length.
+4 778     }
+4 648         }
+4 655                 {
+4 631     //  Case of a color image
+4 699     //--------------------------------
+4 629     //  Read the pixel data
+4 759         head[2]  = 3 ;                          // Image type: gray-level, uncompressed.
+4 734         unsigned char* data  = (unsigned char*) info->raster;
+4 772         unsigned char* data  = (unsigned char*) info->raster;
+4 667     //  Case of a gray-level image
+4 652             for (int i=0; i<info.height; i++)
+4 650         {
+4 737             unsigned long offset = i*4*info->width;
+4 729         head[15] = (char) (info->height >> 8) ;     // Image height.
+4 767         head[15] = (char) (info->height >> 8) ;     // Image height.
+4 672         if(head[17]&0x20)
+4 663         //  tga files store color information in the order B-G-R
+4 755         //--------------------------------
+4 657                     dest+=4;
+4 643                 {
+4 685     return info;
+4 725         head[8]  = head[9] = 0 ;                // Image X origin.
+4 723         head[5]  = head[6] = 0 ;                // Color map lenght.
+4 700     FILE* tga_out = fopen(filePath, "wb" );
+4 761         head[5]  = head[6] = 0 ;                // Color map lenght.
+4 627     
+4 728         head[12] = (char) (info->width & 0x0FF) ;
+4 771         fwrite( head, sizeof(char), 18, tga_out );
+4 688 //  Function : writeTGA 
+4 744             }
+4 733         fwrite( head, sizeof(char), 18, tga_out );
+4 715         //--------------------------------
+4 678                 ptr -= info.width;
+4 693 //  Return value: Error code (0 = no error)
+4 702     {
+4 656                     fread(dest, 3*sizeof(char), 1, tga_in);
+4 646                 }
+4 747     }
+4 628     //--------------------------------
+4 642                 for (int j=0; j<info.width; j++)
+4 677                 fread( ptr, sizeof(char), info.width, tga_in ) ;
+4 633     //if (info.type == kTGA_COLOR) *****************************
+4 765         head[13] = (char) (info->width >> 8) ;      // Image width.
+4 673         {
+4 701     if (tga_out == NULL)
+4 683     }
+4 746         fclose( tga_out ) ;
+4 709     
+4 742                 fwrite(&data[offset], sizeof(char), 1, tga_out);
+4 666     }
+4 753         //--------------------------------
+4 745         }
+4 776         }
+4 654                 for (int j=0; j<info.width; j++)
+4 630     //--------------------------------
+4 637         if(head[17]&0x20)
+4 754         // create the header (TARGA file)
+4 741                 fwrite(&data[offset+1], sizeof(char), 1, tga_out);
+4 721         head[2]  = 2 ;                          // Image type: true color, uncompressed.
+4 773         for(int i = 0; i < info->height; i++)
+4 651             unsigned char* dest = data;
+4 756         char    head[18] ;
+4 743                 offset+=4;
+4 760         head[3]  = head[4] = 0 ;                // First color map entry.
+4 632     //------------------------  
+4 658                 }
+4 730         head[14] = (char) (info->height & 0x0FF) ;
+4 691 //   This function write out an image of type TGA (24-bit color)
+4 668     //----------------------------  
+4 758         head[1]  = 0 ;                          // Color map type.
+4 739             {
+4 647             }
+4 714     {
+4 682             fread(data, sizeof(char), imgSize, tga_in);
+4 719         head[0]  = 0 ;                          // ID field length.
+4 681         else
+4 626     info.raster = (void*) data;
+4 645                     ptr -= 4;
+4 676             {
+4 692 //  
+4 660             
+4 722         head[3]  = head[4] = 0 ;                // First color map entry.
+4 749     //  Case of a gray-level image
+4 640             for(int i = 0; i < info.height; i++)
+4 740                 fwrite(&data[offset+2], sizeof(char), 1, tga_out);
+4 766         head[12] = (char) (info->width & 0x0FF) ;
+4 727         head[13] = (char) (info->width >> 8) ;      // Image width.
+4 665         swapRGBA(data, info.height, info.width);
+4 674             unsigned char* ptr = data + imgSize - info.width;
+4 661         }
+4 735         for(int i = 0; i < info->height; i++)
+4 669     else
+4 726         head[10] = head[11] = 0 ;               // Image Y origin.
+4 750     //------------------------------
+4 706     //  Yes, I know that I tell you over and over that cascading if-else tests
+4 762         head[7]  = 0 ;                          // Color map entry size.
+4 653             {
+4 662         
+4 731         head[16] = 24 ;                         // Bits per pixel.
+4 764         head[10] = head[11] = 0 ;               // Image Y origin.
+4 716         // create the header (TARGA file)
+4 698     // open TARGA output file 
+4 644                     fread(ptr, 3*sizeof(char), 1, tga_in);
+4 679             }
+4 768         head[14] = (char) (info->height & 0x0FF) ;
+4 736         {
+4 695 int writeTGA(char* filePath, ImageStruct* info)
+4 720         head[1]  = 0 ;                          // Color map type.
+4 752     {
+4 774         {
+4 694 //----------------------------------------------------------------------*/ 
+4 711     //  Case of a color image
+4 704         return 21;
+4 624         exit(13);
+4 687 //---------------------------------------------------------------------*
+4 671         //  First check if the image is mirrored vertically (a bit setting in the header)
+4 690 //  
+4 718         char    head[18] ;
+4 777         fclose( tga_out ) ;
+4 738             for(int j = 0; j < info->width; j++)
+4 638         {
+4 636         //  First check if the image is mirrored vertically (a bit setting in the header)
+4 712     //------------------------------
+4 684     fclose( tga_in) ;
+4 696 {
+4 732         head[17] = 0 ;                          // Image descriptor bits ;
+4 641             {
+4 770         head[17] = 0 ;                          // Image descriptor bits ;
+4 775             fwrite(&data[i*info->width], sizeof(char), info->width, tga_out);
+4 639             unsigned char* ptr = data + imgSize*4 - info.bytesPerRow;
+4 751     else if (info->type == GRAY_RASTER)
+4 724         head[7]  = 0 ;                          // Color map entry size.
+4 710     //------------------------------
+4 664         //  we need to swap the Red and Blue components
+4 705     }
+4 670     {
+4 717         //--------------------------------
+4 675             for(int i = 0; i < info.height; i++)
+4 708     //  are supported.  If I ever add one more I'll use a switch, I promise.

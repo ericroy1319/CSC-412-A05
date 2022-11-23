@@ -80,7 +80,7 @@ void convert_to_string(std::string* str, char* arr, int len){
     for(int c = 0; c < len; c++){
         (*str) = (*str) + arr[c];
     }
-    std::cout<<"\t" << str<<std::endl;
+    // std::cout<<"\t" << str<<std::endl;
 }
 
 // function used to read message from child 
@@ -184,20 +184,38 @@ void get_content(std::string fpath, std::string* content){
     file.close();
 }
 // Second Gerneration of Child Output 
-void second_child_output(std::string scrap_path, std::string read_from_file, int c_num){
+void second_child_output(std::string scrap_path, std::string fpath){
     // open file and read content, write to path 
     std::ifstream file;
     std::string content;
-    std::string child = "/child_" + std::to_string(c_num) + "_fileContent";
+    std::string child;
     std::string fileType = ".txt";
-    std::string fileName = child+fileType;
-    std::string outputPath = scrap_path + fileName;
-    file.open(read_from_file);
+    std::string fileName;
+    std::string outputPath;
+
+    file.open(fpath);
     // iterate through file and get each line
+    bool execute_code_block = true;
     for(string line; getline(file,line);){
         // pull the file path from the file 
         // cout << line << endl;
         get_content(line, &content);
+        if(execute_code_block == true){
+            string c_num; 
+            char ch; 
+            for(int c = 0; c < content.size(); c++){
+                ch = content[c];
+                if(ch == ' '){
+                    execute_code_block = false;
+                    break;
+                }else{
+                    c_num += ch;
+                }
+            }
+            child = "/child_" + c_num + "_fileContent";
+            fileName = child+fileType;
+            outputPath = scrap_path + fileName;
+        }
         // WRITE TO SCRAP FOLDER
         // check to see if file exists 
         bool file_exists;
@@ -210,14 +228,17 @@ void second_child_output(std::string scrap_path, std::string read_from_file, int
         // if file does not exist create and write to it 
         if(file_exists == false){
             std::ofstream CHILD(outputPath);
-            cout << "[DEBUG] Writing Content " << content << endl;
+            if(CHILD.is_open() == false){
+                cout << "FILE NOT OPEN\t" << outputPath <<  endl;
+            }
+            // cout << "[DEBUG] Writing Content " << content << endl;
             CHILD << content << "\n";
             CHILD.close();
         }else{
             std::ofstream CHILD;
             CHILD.open(outputPath, std::ios_base::app);
             CHILD << content << "\n";
-            cout << "[DEBUG] Writing Content " << content << endl;
+            // cout << "[DEBUG] Writing Content " << content << endl;
             CHILD.close();
         }    
     }
@@ -242,20 +263,69 @@ void determine_process_location(std::string *file_path, std::string *send_to){
     file.close();
 }
 
-void parent_output(std::string o_path){
-    // WRITE TO SCRAP FOLDER
+void read_fileContent(std::string fpath, std::vector<std::string>* content){
+    std::ifstream file;
+    file.open(fpath);
+    if(file.is_open() == false){
+        cout << "ERROR" << endl;
+    }
+    for(std::string line; getline(file,line);){
+        std::string temp = line;
+        (*content).push_back(temp);
+    }
+    file.close();
+}
+void print_fileContent(vector<vector<string> > vec){
+    
+    for(int i = 0; i < vec.size(); i ++){
+        for(int j = 0; j < vec[i].size(); j++){
+            cout << vec[i][j] << endl;
+        }
+    }
+}
+void parent_output(std::string scrap_path){
+    
+    // Path for file to be written 
     std::string parent = "/parent";
     std::string f_type = ".txt";
     std::string f_name = parent + f_type;
-    std::string output_path = o_path + f_name;
+    std::string output_path = scrap_path + f_name;
+    // std::ofstream PARENT(output_path);
+    // get all the files from the scrap directory 
+    std::vector<std::string> fpaths;
+    file_paths(scrap_path, &fpaths);
+    // for(int i = 0; i < fpaths.size(); i ++){
+    //     cout << "\t"<<fpaths[i] << endl;
+    // }
+    // every odd index will be a fileContent path 
+    std::vector<std::vector<std::string> > fileContent; 
+    for(int i = 0; i < fpaths.size(); i++){
+        std::vector<std::string> temp;
+        // cout << "[DEBUG] fpath " << i << " " << fpaths[i] << endl;
+        read_fileContent(fpaths[i], &temp);
+
+        char ch = temp[0][0];
+        if(isdigit(ch)==true){
+            fileContent.push_back(temp);
+        }
+        
+    }
+    // print_fileContent(fileContent);
     std::ofstream PARENT(output_path);
-    PARENT << "This is the parent output file\n";
+    for(int i = 0; i < fileContent.size(); i++){
+        for(int j = 0; j < fileContent[i].size(); j++){
+            PARENT << fileContent[i][j] << "\n";
+        }
+    }
     PARENT.close();
 }
 
+
+
 // print function for showing what files intially go to which children 
 void print_split(std::vector<std::vector<std::string>> *the_split){
-    std::cout<<std::endl;
+
+
     for(int i = 0; i < (*the_split).size(); i++){
         std::cout<<"Child <"<<i+1 << "> will get: \t";
         for(int j = 0; j < (*the_split)[i].size(); j++){

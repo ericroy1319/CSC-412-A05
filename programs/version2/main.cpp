@@ -4,9 +4,10 @@ be the directory path to the data and the last argument passed will be
 the path to a scrap folder*/ 
 #include "foo.cpp"
 using namespace std;
-#define BUFF_SIZE 1024
+#define BUFF_SIZE 256
 
 int main(int argc, const char* argv[]){
+   
     //-------------------------------------------------//
     //         Store Arguments into variables          //
     //-------------------------------------------------//
@@ -18,7 +19,7 @@ int main(int argc, const char* argv[]){
     std::string data_path = argv[2]; 
     std::string scrap_path = argv[3];
     scrap_path += "/scrap";
-
+     
     //-------------------------------------------------//
     //             Create scrap folder                 //
     //-------------------------------------------------//
@@ -34,6 +35,7 @@ int main(int argc, const char* argv[]){
     else{
         clear_dir(scrap_path);
     }
+   
 
     //-------------------------------------------------//
     //             Split the work                      //
@@ -50,6 +52,7 @@ int main(int argc, const char* argv[]){
     split_work(&assigned_work,&f_paths,child_count);   
     // print the result of the splitting of work 
     // print_split(&assigned_work);
+     
     
     //-------------------------------------------------//
     //                  Create Pipes                   //
@@ -72,6 +75,7 @@ int main(int argc, const char* argv[]){
            return(50);
         }
     }
+    
 
     //-------------------------------------------------//
     //            Create Children Gen 1                //
@@ -82,6 +86,7 @@ int main(int argc, const char* argv[]){
     (the content of the file is immaterial in this version)*/
   
     int terminate_IPC = child_count; 
+
     int pid = getpid();
     for(int i = 0; i < child_count; i++){
         if(pid != 0){
@@ -100,7 +105,7 @@ int main(int argc, const char* argv[]){
                 if(close(fd_ctp[0]) == -1){
                     cout << "ERROR 2" << endl;
                 };
-    
+                
                 //******************************//
                 //     Write to Parent Pipe     // 
                 //******************************//
@@ -109,6 +114,7 @@ int main(int argc, const char* argv[]){
                     
                     // extract the correct process location from the file 
                     determine_process_location(&assigned_work[i][c], &send_to_process);
+                    // cout << "[DEBUG] Child_" << i << " had Child_" << send_to_process << "'s file " << assigned_work[i][c] << endl; 
                     // if file does not belong to self for processing, pass it back to parent
                     
                     if(stoi(send_to_process) != i){
@@ -307,6 +313,7 @@ int main(int argc, const char* argv[]){
     in the scrap folder as well, then terminates. */ 
     int parent;
     while((parent=wait(NULL))>0);
+    
 
 
 
@@ -316,6 +323,8 @@ int main(int argc, const char* argv[]){
         // get file paths of 1st gen children output 
         std::vector<std::string> child_output_paths;
         file_paths(scrap_path, &child_output_paths);
+        std::vector<std::string> child_output_names;
+        file_names(scrap_path, &child_output_names);
         //-------------------------------------------------//
         //            Create Children Gen 2                //
         //-------------------------------------------------//
@@ -332,13 +341,19 @@ int main(int argc, const char* argv[]){
                     to the new file. */ 
                     // create new output file
                     // cout << "[DEBUG] The Scrap path for Gen2 Children are: " << child_output_paths[i] << endl;
-                    second_child_output(scrap_path, child_output_paths[i],i);
+                    second_child_output(scrap_path, child_output_paths[i]);
                     return 0;
-                }else{
-                    // parent does work 
-                }   
+                }
             }
         }
     }
+    
+    int p;
+    while((p=wait(NULL))>0);
+    if(pid!=0){
+
+        parent_output(scrap_path);
+    }
+
     return 0;
 }
