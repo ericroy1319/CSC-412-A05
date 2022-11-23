@@ -1,29 +1,15 @@
-#include <iostream> 
-#include <fstream>
-#include <string>
-#include <vector>
-#include <sstream>
-#include <filesystem>
-#include <cstring>
-#include <cstdlib>
-
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <fcntl.h>
-
+#include "foo.hpp"
 using namespace std;
 
 // function used determine if directory exists 
-bool path_exist(const std::string &str){
+bool path_exist(const std::string &dpath){
     struct stat buffer;
-    return (stat(str.c_str(), &buffer) == 0);
+    return (stat(dpath.c_str(), &buffer) == 0);
 }
 
 // make a new direcotry 
-void make_dir(std::string path){
-    int check = mkdir(path.c_str(), 0777);
+void make_dir(std::string dpath){
+    int check = mkdir(dpath.c_str(), 0777);
     // validate that direcotry was actually made 
     if(!check){
         return;
@@ -34,27 +20,27 @@ void make_dir(std::string path){
 }
 
 // clear directory 
-void clear_dir(std::string path){
+void clear_dir(std::string dpath){
         // if directory exists, clear the contents of the direcoty 
-        for (const auto& entry : std::filesystem::directory_iterator(path)){
+        for (const auto& entry : std::filesystem::directory_iterator(dpath)){
             std::filesystem::remove_all(entry.path());
         } 
 }
 
 // count the number of files in a given directory
-int file_count(std::string dir_path){
+int file_count(std::string dpath){
     int counter = 0;
-    std::filesystem::path path (dir_path.c_str());
-    for (auto& p : std::filesystem::directory_iterator(path))
+    std::filesystem::path dir_path (dpath.c_str());
+    for (auto& p : std::filesystem::directory_iterator(dir_path))
         counter++;
 
     return counter;
 }
 
 // get all file names from a directory 
-void file_names(std::string dir_path, std::vector<std::string> *fnames){
-    std::filesystem::path path (dir_path.c_str());
-    for(const auto & entry : std::filesystem::directory_iterator(path)){
+void file_names(std::string dpath, std::vector<std::string> *fnames){
+    std::filesystem::path dir_path (dpath.c_str());
+    for(const auto & entry : std::filesystem::directory_iterator(dir_path)){
         if(entry.is_regular_file()){
             if(entry.path().extension().string() == ".txt"){
                 (*fnames).push_back(entry.path().filename());
@@ -64,9 +50,9 @@ void file_names(std::string dir_path, std::vector<std::string> *fnames){
 }
 
 // get all the file paths from a directory 
-void file_paths(std::string dir_path, std::vector<std::string> *fpaths){
-    std::filesystem::path path (dir_path.c_str());
-    for(const auto & entry : std::filesystem::directory_iterator(path)){
+void file_paths(std::string dpath, std::vector<std::string> *fpaths){
+    std::filesystem::path dir_path (dpath.c_str());
+    for(const auto & entry : std::filesystem::directory_iterator(dir_path)){
         if(entry.is_regular_file()){
             if(entry.path().extension().string() == ".txt"){
                 (*fpaths).push_back(entry.path());
@@ -84,6 +70,7 @@ void convert_to_string(std::string* str, char* arr, int len){
 }
 
 // function used to read message from child 
+/// NOT CURRENTLY USED
 void parse_message(char* arr, int len, std::string* send_to, std::string* fpath){
     char ch;
     int idx;
@@ -113,8 +100,8 @@ void parse_message(char* arr, int len, std::string* send_to, std::string* fpath)
 }
 
 void split_work(std::vector<std::vector<std::string>> *assigned_work, 
-std::vector<std::string> *f_names, int child_count){
-    int f_count = f_names->size();
+std::vector<std::string> *fnames, int child_count){
+    int f_count = fnames->size();
     int split = f_count / child_count;
     int extra_work = f_count % child_count;
     int idx = 0; 
@@ -126,12 +113,12 @@ std::vector<std::string> *f_names, int child_count){
         (*assigned_work).push_back(temp);
         for(j = 0 ; j < split; j ++){
             // add the normal work load for child 
-            (*assigned_work)[i].push_back((*f_names)[idx]);
+            (*assigned_work)[i].push_back((*fnames)[idx]);
             idx++;
         }
         // assign extra work if there is a remainder 
         if(extra_work > 0){
-            (*assigned_work)[i].push_back((*f_names)[idx]);
+            (*assigned_work)[i].push_back((*fnames)[idx]);
             extra_work--;
             idx++;
         }
@@ -139,9 +126,9 @@ std::vector<std::string> *f_names, int child_count){
 
 }
 // First Generation of Child Output  
-void child_output(std::vector<std::string>* file_paths, std::string* write_to_path, int* c_num){
+void first_gen_child_work(std::vector<std::string>* fpaths, std::string* write_to_path, int* c_num){
     // WRITE TO SCRAP FOLDER
-    int len = file_paths->size();
+    int len = fpaths->size();
     std::string child = "/child_" + std::to_string(*c_num);
     std::string fileType = ".txt";
     std::string fileName = child+fileType;
@@ -160,14 +147,14 @@ void child_output(std::vector<std::string>* file_paths, std::string* write_to_pa
         std::ofstream CHILD(outputPath);
         // CHILD << "Child_"<<c_num<<" is assigned the following files:\n";
         for(int i = 0; i < len; i++){
-            CHILD<<(*file_paths)[i]<<"\n";
+            CHILD<<(*fpaths)[i]<<"\n";
         }
         CHILD.close();
     }else{
         std::ofstream CHILD;
         CHILD.open(outputPath, std::ios_base::app);
         for(int i = 0; i < len;i++){
-            CHILD<<(*file_paths)[i]<<"\n";
+            CHILD<<(*fpaths)[i]<<"\n";
         }
         CHILD.close();
     }
@@ -184,7 +171,7 @@ void get_content(std::string fpath, std::string* content){
     file.close();
 }
 // Second Gerneration of Child Output 
-void second_child_output(std::string scrap_path, std::string fpath){
+void second_gen_child_work(std::string scrap_path, std::string fpath){
     // open file and read content, write to path 
     std::ifstream file;
     std::string content;
@@ -246,13 +233,13 @@ void second_child_output(std::string scrap_path, std::string fpath){
 
 
 
-void determine_process_location(std::string *file_path, std::string *send_to){
+void determine_process_location(std::string *fpath, std::string *send_to){
     /* loop through assigned segement of files, determine where they need go,
     place them into the correct index of redistributed_work vector, and this 
     will be used to pipe to parent */
     std::ifstream file; 
     // open file from filepath 
-    file.open(*file_path);
+    file.open(*fpath);
     // get the first line from the file 
     std::string line; getline(file,line);
     // seperate the line by white space 
@@ -275,14 +262,7 @@ void read_fileContent(std::string fpath, std::vector<std::string>* content){
     }
     file.close();
 }
-void print_fileContent(vector<vector<string> > vec){
-    
-    for(int i = 0; i < vec.size(); i ++){
-        for(int j = 0; j < vec[i].size(); j++){
-            cout << vec[i][j] << endl;
-        }
-    }
-}
+
 void parent_output(std::string scrap_path){
     
     // Path for file to be written 
@@ -320,19 +300,3 @@ void parent_output(std::string scrap_path){
     PARENT.close();
 }
 
-
-
-// print function for showing what files intially go to which children 
-void print_split(std::vector<std::vector<std::string>> *the_split){
-
-
-    for(int i = 0; i < (*the_split).size(); i++){
-        std::cout<<"Child <"<<i+1 << "> will get: \t";
-        for(int j = 0; j < (*the_split)[i].size(); j++){
-            
-            std::cout << (*the_split)[i][j] << " ";
-        }
-        std::cout<<"\n";
-    }
-
-}

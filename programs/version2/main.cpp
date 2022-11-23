@@ -3,7 +3,8 @@ the parent proccess needs to create, the second argument passed will
 be the directory path to the data and the last argument passed will be 
 the path to a scrap folder*/ 
 #include "foo.cpp"
-using namespace std;
+
+
 
 #define BUFF_SIZE 256
 #define WRITE 1
@@ -13,6 +14,8 @@ using namespace std;
 #define CHILD 0
 #define PIPE 2
 #define SPACE ' '
+
+using namespace std;
 
 int main(int argc, const char* argv[]){
    
@@ -27,7 +30,7 @@ int main(int argc, const char* argv[]){
     std::string data_path = argv[2]; 
     std::string scrap_path = argv[3];
     scrap_path += "/scrap";
-     
+    
     //-------------------------------------------------//
     //             Create scrap folder                 //
     //-------------------------------------------------//
@@ -226,7 +229,7 @@ int main(int argc, const char* argv[]){
                 }
                 // cout << "[DEBUG] child_" << i << " will process " << process_files.size() << " files: " << endl;
                 // function used to output to scrap folder 
-                child_output(&process_files, &scrap_path, &i);
+                first_gen_child_work(&process_files, &scrap_path, &i);
                 return 0;
             }else{
                 //******************************//
@@ -349,7 +352,7 @@ int main(int argc, const char* argv[]){
                     to the new file. */ 
                     // create new output file
                     // cout << "[DEBUG] The Scrap path for Gen2 Children are: " << child_output_paths[i] << endl;
-                    second_child_output(scrap_path, child_output_paths[i]);
+                    second_gen_child_work(scrap_path, child_output_paths[i]);
                     return 0;
                 }
             }
