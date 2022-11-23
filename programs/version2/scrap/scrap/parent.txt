@@ -1,0 +1,1242 @@
+0 111  */
+0 32     "",
+0 58     WRONG_NUMBER_OF_ARGUMENTS,
+0 121  *  they were read from a file, played from a movie, captured from a live
+0 40 {
+0 119 } ImageFileType;
+0 106     "Invalid crop size",        //  INVALID_CROP_SIZE,
+0 2 //  rotate
+0 63     INVALID_CROP_X_TYPE,
+0 76  */
+0 93     //
+0 142          */
+0 53     //
+0 148  *  having separate unsigned char and float pointers
+0 26     
+0 56     //
+0 42     //
+0 146 /** This is the data type to store all relevant information about an image.  After
+0 99     //
+0 131         /** Color image with 4 bytes per pixel
+0 153     ImageType type;
+0 110  *  to touch this
+0 116         kTGA_GRAY,
+0 43     //  file-related
+0 132          */
+0 25     NUM_ROTATIONS   //  automatically 4
+0 104     "Invalid crop width",       //  INVALID_CROP_WIDTH_TYPE,
+0 102     "Invalid crop y",           //  INVALID_CROP_Y_TYPE,
+0 122  *  video stream, or the result of calculations.
+0 109 /** This enumerated type is used by the image reading code.  You shouldn't have
+0 138          */
+0 114         kUnknownType = -1,
+0 98     "Rotation specification can only contain letters l or r"    //  INVALID_ROT_STRING,
+0 155      *  (only useful for DEEP_GRAY_RASTER and FLOAT_RASTER types)
+0 73 /** Going overly cute here:  Error message for each of the errors
+0 151     /** Type of image stored
+0 94     //  command line argument errors
+0 128          */
+0 80     //  file-related errors
+0 41     NO_ERROR = 0,
+0 72 } ImageIOErrorCode;
+0 59     NO_DASH_ON_ROT_STRING,
+0 7 //
+0 78     "",     //  NO_ERROR
+0 16 /** Simple enum type to report optional arguments for the program
+0 84     "Cannot open write file",   //  CANNOT_OPEN_WRITE_FILE,
+0 91     //  Generic errors
+0 18 typedef enum RotationVal
+0 150 typedef struct ImageStruct {
+0 69     //
+0 45     FILE_NOT_FOUND,
+0 147  *  some thought, I have decided to store the 1D and 2D rasters as void* rather than
+0 46     CANNOT_OPEN_READ_FILE,
+0 20     NO_ROTATION = 0,
+0 139         DEEP_GRAY_RASTER,
+0 29  *  rotation value.
+0 5 //
+0 85     "Wrong file type",          //  WRONG_FILE_TYPE,
+0 23     ROTATE_270,
+0 136         GRAY_RASTER,
+0 38  */
+0 65     INVALID_CROP_CORNER,
+0 11 //
+0 88     "Cannot read file",         //  CANNOT_READ_FILE,
+0 79     //
+0 61     //
+0 57     //  command line argument errors
+0 12 #if 0
+0 55     MEMORY_ALLOCATION_ERROR,
+0 117         kPPM,                   //  24-bit color image
+0 107     
+0 118         kPGM                    //  8-bit gray-level image
+0 92     "Memory allocation error",  //  MEMORY_ALLOCATION_ERROR
+0 37 /** An enum type for all the errors that this program specifically handles
+0 51     CANNOT_READ_FILE,
+0 133         RGBA32_RASTER,
+0 123  *  Feel free to edit and add types you need for your project.
+0 39 typedef enum ImageIOErrorCode
+0 13 #pragma mark -
+0 19 {
+0 143         FLOAT_RASTER
+0 125 typedef enum ImageType
+0 75  *  different from that of the enum type
+0 10 #include <stdlib.h>
+0 30  */
+0 113 {
+0 21     ROTATE_90,
+0 154     /** Maximum value for all fields of the image
+0 135          */
+0 8 #include <stdio.h>
+0 83     "Cannot open read file",    //  CANNOT_OPEN_READ_FILE,
+0 152      */
+0 48     WRONG_FILE_TYPE,
+0 52     END_OF_FILE_ERROR,
+0 1 //
+0 70     NUM_ERROR_CODES     //  correct value because I don't skip codes
+0 6 //  Created by Jean-Yves HERVE on 2020-10-10.
+0 126 {
+0 35     " [l]"
+0 22     ROTATE_180,
+0 108 };
+0 127         /** No type, for an image that got freed (no more raster)
+0 74  *  supported.  This one is tricky because it's easy to get the order
+0 14 #pragma mark Custom data types and global variables
+0 95     //
+0 68     INVALID_CROP_SIZE,
+0 9 #include <string.h>
+0 34     " [rr]",
+0 112 typedef enum ImageFileType
+0 100     //
+0 49     UNKNOWN_FILE_TYPE,
+0 103     "Invalid crop corner",      //  INVALID_CROP_CORNER,
+0 129         NO_RASTER,
+0 36 };
+0 24     //
+0 97     "Rotation specification must start with a dash",    //  NO_DASH_ON_ROT_STRING,
+0 77 char* ERROR_STR[NUM_ERROR_CODES] = {
+0 82     "File not found",           //  FILE_NOT_FOUND,
+0 105     "Invalid crop height",      //  INVALID_CROP_HEIGHT_TYPE,
+0 120 /** This is the enum type that refers to images loaded in memory, whether
+0 81     "File path is null",        //  FILE_PATH NULL
+0 50     CANNOT_WRITE_FILE,
+0 28 /** An array to store the suffix strings for the output file, for each
+0 145 } ImageType;
+0 62     //
+0 4 //	image
+0 130          
+0 141          *  stored in a float raster
+0 47     CANNOT_OPEN_WRITE_FILE,
+0 15 #endif
+0 86     "Unknown file type",        //  UNKNOWN_FILE_TYPE
+0 115         kTGA_COLOR,             //  24-bit color image
+0 17  */
+0 134         /** Gray image with 1 byte per pixel
+0 140         /** Monochrome image (either gray or one color channel of a color image)
+0 96     "Incorrect number of arguments.\nProper usage: rotate -{r|l}+ inputImagePath outFolderPath\n",  //  WRONG_NUMBER_OF_ARGUMENTS
+0 31 char* ROT_SUFFIX[NUM_ROTATIONS] = {
+0 64     INVALID_CROP_Y_TYPE,
+0 44     FILE_PATH_NULL,
+0 3 //  Reads an image file (in TGA format), and saves a rotated version of the
+0 33     " [r]",
+0 67     INVALID_CROP_HEIGHT_TYPE,
+0 144             
+0 149  */
+0 66     INVALID_CROP_WIDTH_TYPE,
+0 90     //
+0 87     "Cannot write file",        //  CANNOT_WRITE_FILE,
+0 27 } RotationVal;
+0 137         /** Gray image with 2 bytes per pixel
+0 54     //  Generic errors
+0 71     
+0 60     INVALID_ROT_STRING,
+0 101     "Invalid crop x",           //  INVALID_CROP_X_TYPE,
+0 89     "End of file error",        //  END_OF_FILE_ERROR,
+0 124  */
+7 1093     if (img->type == RGBA32_RASTER)
+7 1231     //  the rest of the info is read from the file stream
+7 1180     {
+7 1173     // --- find if we have a known picture format ---
+7 1213     {
+7 1115     }
+7 1142         
+7 1164 }
+7 1131                 fclose(fp);
+7 1111                     return CANNOT_WRITE_FILE;
+7 1242 }
+7 1156     else
+7 1178     if ((imgType[0] != 'P') || ((imgType[1] != '2') && (imgType[1] != '5') &&
+7 1227     }
+7 1216         {
+7 1229     sscanf(buf,"%d", nbCols);
+7 1160     }
+7 1230     
+7 1205     //  read until we encounter a non-whitespace character.  This could be a comment
+7 1220             fscanf(inPPM, "%[\n\r\t ]", skip);
+7 1096         fprintf(fp, "%d %d\n", img->width, img->height);
+7 1190             break;
+7 1228     //  but should contain only one thing: the width of the image
+7 1226             commentsSkipped = 1;
+7 1199     //  Note: I am doing some really ugly stuff with file input and buffers.
+7 1118         fprintf(fp, "P5\n");
+7 1210         commentsSkipped = 1;
+7 1183     }
+7 1176     imgType[1] = buf[1];
+7 1217             //  ...skip the rest of the line
+7 1122         
+7 1116     else if (img->type == GRAY_RASTER)
+7 1168                            unsigned int* maxVal)
+7 1095         fprintf(fp, "P6\n");
+7 1214         //  if we stepped into  some comment...
+7 1197     }
+7 1170     char    buf[80], skip[80], imgType[2], c;
+7 1166                            ImageFileType* fileType,
+7 1129                 fprintf(stderr, "Error in writePPM: couldn't write to file %s\n",
+7 1238     if (imgType[1] == '2' || imgType[1] == '3')
+7 1232     fscanf(inPPM,"%d", nbRows);
+7 1141         unsigned short** raster2D = (unsigned short**) img->raster2D;
+7 1127             if (ierr != 1)
+7 1192         case '6':
+7 1147             if (ierr != img->width)
+7 1130                                  filePath);
+7 1172     
+7 1219             //  skip additional whitespace on the next line
+7 1187         case '2':
+7 1196             break;
+7 1106                 if (ierr != 3)
+7 1155     }
+7 1099         
+7 1175     imgType[0] = buf[0];
+7 1221             
+7 1186     {
+7 1152                 return CANNOT_WRITE_FILE;
+7 1150                                  filePath);
+7 1207     fscanf(inPPM, "%[^\n\r\t ]", buf);
+7 1117     {
+7 1195         default:
+7 1136     else if (img->type == DEEP_GRAY_RASTER)
+7 1189             *fileType = kPGM;
+7 1188         case '5':
+7 1203     //  skip whitespace
+7 1233     fscanf(inPPM,"%d", maxVal);
+7 1201     //  on the Mac are screwed up (they might be, for all I know), or just
+7 1114         }
+7 1100         for (unsigned int i=img->height-1, mirrorI=0; mirrorI<img->height; i--, mirrorI++)
+7 1146             
+7 1198     
+7 1094     {
+7 1107                 {
+7 1113             }
+7 1120         fprintf(fp, "255\n");
+7 1239         return 1;
+7 1209     if (buf[0] != '#')
+7 1191         case '3':
+7 1222             //  then read until the next whitespace
+7 1121         unsigned char** raster2D = (unsigned char**) img->raster2D;
+7 1144         {
+7 1177     
+7 1119         fprintf(fp, "%d %d\n", img->width, img->height);
+7 1135     }
+7 1224         }
+7 1137     {
+7 1167                            unsigned int* nbRows, unsigned int* nbCols,
+7 1157     {
+7 1105                 
+7 1185     switch (imgType[1])
+7 1140         fprintf(fp, "%d\n", img->maxVal);
+7 1132                 return CANNOT_WRITE_FILE;
+7 1241         return 0;
+7 1112                 }
+7 1171     int     commentsSkipped = 0;
+7 1108                     fprintf(stderr, "Error in writePPM: couldn't write to file %s\n",
+7 1202     //  because I kept missing something important somewhere.
+7 1204     fscanf(inPPM, "%[\n\r\t ]", skip);
+7 1148             {
+7 1182         exit(WRONG_FILE_TYPE);
+7 1208     
+7 1123         for (unsigned int i=img->height-1, mirrorI=0; mirrorI<img->height; i--, mirrorI++)
+7 1211     
+7 1103             {
+7 1151                 fclose(fp);
+7 1154         }
+7 1101         {
+7 1158         printf("A float raster image cannon be saved in PPM/PGM format\n");
+7 1125             size_t ierr = fwrite(raster2D[i], 1, img->width, fp);
+7 1092     }
+7 1193             *fileType = kPPM;
+7 1215         if (buf[0] == '#')
+7 1235     //  Read the extra space
+7 1102             for (unsigned int j=0; j<img->width; j++)
+7 1098         int** raster2D = (int**) img->raster2D;
+7 1223             fscanf(inPPM, "%[^\n\r\t ]", buf);
+7 1161     
+7 1110                     fclose(fp);
+7 1134         }
+7 1126                 
+7 1162     fclose(fp);
+7 1133             }
+7 1200     //  I am not sure if I had to do that because ANSI file I/O libraries
+7 1159         return WRONG_FILE_TYPE;
+7 1179                                 (imgType[1] != '3') && (imgType[1] != '6')))
+7 1206     //  or the nb of columns
+7 1174     fscanf(inPPM, "%s", buf);
+7 1128             {
+7 1124         {
+7 1097         fprintf(fp, "255\n");
+7 1145             size_t ierr = fwrite(raster2D[i], 2, img->width, fp);
+7 1184     //  Get the images type
+7 1163     return NO_ERROR;
+7 1181         printf("%s is not a file in the PPM format.\n", filePath);
+7 1149                 fprintf(stderr, "Error in writePPM: couldn't write to file %s\n",
+7 1236     fscanf(inPPM, "%c", &c);
+7 1225         else
+7 1234     
+7 1109                                      filePath);
+7 1139         fprintf(fp, "%d %d\n", img->width, img->height);
+7 1212     while (!commentsSkipped)
+7 1138         fprintf(fp, "P5\n");
+7 1165 char getHeaderInfoPPM_PGM_(FILE* inPPM, char* filePath,
+7 1218             fscanf(inPPM, "%[^\n\r]", skip);
+7 1237     
+7 1169 {
+7 1104                 size_t ierr = fwrite(raster2D[i]+j, 1, 3, fp);
+7 1240     else
+7 1194             break;
+7 1153             }
+7 1143         for (unsigned int i=img->height-1, mirrorI=0; mirrorI<img->height; i--, mirrorI++)
+6 983                 {
+6 1048                         //  binary files.
+6 1082     if (filePath == NULL)
+6 970             image.raster = pixelData;
+6 1059         }
+6 964     else    //  kPGM
+6 999                     unsigned int index = i*nbCols;
+6 1015             image.maxVal = maxVal;
+6 1057             printf("Only gray levels up to 16 bits currently supported.\n");
+6 1074 //          pointer to the image to write
+6 965     {
+6 1022             image.raster2D = (void*) r2D;
+6 972             image.bytesPerPixel = 1;
+6 1036                 }
+6 1035                     printf("\n");
+6 1039             else
+6 959         unsigned char** r2D = (unsigned char**) calloc(nbRows, sizeof(unsigned char*));
+6 984                     unsigned int index = i*nbCols;
+6 1060     }
+6 1044                     
+6 1027                 {
+6 1063     
+6 1085         return FILE_PATH_NULL;
+6 1055         else
+6 940                 unsigned index = 4*i*nbCols;
+6 945                     fscanf(inPPM, "%c%c%c", &cRed, &cGreen, &cBlue);
+6 1069 }
+6 1006             }
+6 1075 //
+6 1030                     for (unsigned int j = 0; j < nbCols; j++, index++)
+6 986                     for (unsigned int j = 0; j < nbCols; j++)
+6 946                     //  for binary format I don't bother about the scaling
+6 1067     
+6 1024             if (isASCII)
+6 1034                     }
+6 1012             unsigned short* pixelData = (unsigned short*)malloc(nbCols*nbRows*2);
+6 994             //  The image is stored in a binary format
+6 998                 {
+6 954         image.type = RGBA32_RASTER;
+6 1053             }
+6 956         image.bytesPerRow = 4*nbCols;
+6 1010         {
+6 981             {
+6 1061     
+6 975             unsigned char** r2D = (unsigned char**) calloc(nbRows, sizeof(unsigned char*));
+6 1076 //  Returns: Error code (0 = no error)
+6 937         {
+6 1073 //  Input:  path to the output file
+6 1062     fclose(inPPM);
+6 1050                         fscanf(inPPM, "%c%c", vp, vp+1);
+6 993             }
+6 1046                     {
+6 1068     return image;
+6 1089     {
+6 936         else
+6 1023             //  The image is stored in an ASCII format
+6 1047                         //  This is really ugly but "%hu" doesn't seem to work with
+6 1032 //                      fscanf(inPPM, "%hu", pixelData + index);
+6 968             //  Allocate the pixel array
+6 962         image.raster2D = (void*) r2D;
+6 1003                         fscanf(inPPM, "%c", pixelData + index);
+6 1000                     
+6 1083     {
+6 1016             image.bytesPerPixel = 2;
+6 1014             image.type = DEEP_GRAY_RASTER;
+6 1070 //----------------------------------------------------------------------
+6 1051                     }
+6 996             {
+6 1052                 }
+6 969             unsigned char* pixelData = (unsigned char*)calloc(nbCols*nbRows, 1);
+6 991                     }
+6 1045                     for (unsigned j = 0; j < nbCols; j++, index++)
+6 966         if (maxVal == 255)
+6 938             for (unsigned int i = nbRows-1, invI = 0; invI < nbRows; i--, invI++)
+6 1007         }
+6 1011             //  Allocate the pixel array
+6 1056         {
+6 939             {
+6 953         }
+6 1090         printf("Error in writePPM: couldn't write to file %s\n", filePath);
+6 943                 {
+6 971             image.type = GRAY_RASTER;
+6 1026                 for (unsigned int i = nbRows-1, invI = 0; invI < nbRows; i--, invI++)
+6 960         for (unsigned int i=0; i<nbRows; i++)
+6 958         //  Allocate raster2D
+6 1042                 {
+6 1071 //  writePPM_PGM()
+6 1078 //  Note: Apparently PPM image files are always written upside-down
+6 985                     
+6 1058             exit(WRONG_FILE_TYPE);
+6 974             //  Allocate raster2D
+6 1091         return CANNOT_OPEN_WRITE_FILE;
+6 1017             image.bytesPerRow = 2*nbCols;
+6 947                     pixelData[index++] = (unsigned char) cRed;
+6 1013             image.raster = pixelData;
+6 1041                 for (unsigned int i = nbRows-1, invI = 0; invI < nbRows; i--, invI++)
+6 1040             {
+6 944                     char cRed, cGreen, cBlue;
+6 1033                         fscanf(inPPM, "%hu", r2D[i] + j);
+6 1066     image.height = nbRows;
+6 1031                     {
+6 1020             for (unsigned int i=0; i<nbRows; i++)
+6 941                 
+6 961             r2D[i] = pixelData + i*image.bytesPerRow;
+6 1054         }
+6 976             for (unsigned int i=0; i<nbRows; i++)
+6 997                 for (unsigned int i = nbRows-1, invI = 0; invI < nbRows; i--, invI++)
+6 1008         //  Up to 16 bits of gray levels
+6 1009         else if (maxVal  < 65536)
+6 980             if (isASCII)
+6 1005                 }
+6 992                 }
+6 955         image.bytesPerPixel = 4;
+6 979             //  The image is stored in an ASCII format
+6 1064     //  Copy the information into the image struct
+6 1002                     {
+6 957         image.raster = pixelData;
+6 1037             }
+6 973             image.bytesPerRow = nbCols;
+6 1018             //  Allocate raster2D
+6 1004                     }
+6 1080 ImageIOErrorCode writePPM_PGM(char* filePath, ImageStruct* img)
+6 989                         fscanf(inPPM, "%d", &grayVal);
+6 1019             unsigned short** r2D = (unsigned short**) calloc(nbRows, sizeof(unsigned short*));
+6 1084         printf("Error in writePPM: file name == NULL\n");
+6 982                 for (unsigned int i = nbRows-1, invI = 0; invI < nbRows; i--, invI++)
+6 1038             //  The image is stored in a binary format
+6 1081 {
+6 995             else
+6 1025             {
+6 1021                 r2D[i] = pixelData + i*nbCols;
+6 951                 }
+6 967         {
+6 1088     if (fp == NULL)
+6 978             image.raster2D = (void*) r2D;
+6 977                 r2D[i] = pixelData + i*image.bytesPerRow;
+6 1065     image.width = nbCols;
+6 1077 //
+6 1029                     
+6 1087     FILE* fp = fopen(filePath, "wb");
+6 988                         int grayVal;
+6 952             }
+6 1079 //----------------------------------------------------------------------
+6 990                         pixelData[index++] = (unsigned char) (grayVal);
+6 1072 //  Goal :  writes an image in PPM or PGM binary format
+6 948                     pixelData[index++] = (unsigned char) cGreen;
+6 1049                         char* vp = (char*) (r2D[i] + j);
+6 942                 for (unsigned j = 0; j < nbCols; j++)
+6 1086     }
+6 1001                     for (unsigned j = 0; j < nbCols; j++, index++)
+6 987                     {
+6 949                     pixelData[index++] = (unsigned char) cBlue;
+6 950                     pixelData[index++] = 0xFF;  //  alpha
+6 963     }
+6 1043                     unsigned index = i*nbCols;
+6 1028                     unsigned index = i*nbCols;
+1 246 ImageIOErrorCode determineRotation(char* rotStr, RotationVal* rotVal);
+1 209  */
+1 157     unsigned short maxVal;
+1 284  *  @param  cropWidth       width of the crop region
+1 285  *  @param  cropHeight      height of the top region
+1 196 #pragma mark -
+1 282  *  @param  cropCornerY     y coordinate of the upper-left corner of the crop region
+1 242  *  @param  rotStr  the rotation-specifying string in the form -[r|l]+
+1 241  *  rotation to apply.
+1 213  *  @param  img     pointer to the ImageStruct of the image to write into a .ppm or .pgm file.
+1 280  *  @param  image           the image to crop
+1 264  */
+1 299  *  @param  image   pointer to the RGBA32_RASTER image to rotate
+1 297 /** Produces a rotated copy of the input image (rotated by 90 degree clockwise).
+1 278                       unsigned int* cropWidth, unsigned int* cropHeight);
+1 273  *  @return     an error code (0 if no error)
+1 175      *  <ul>
+1 205  *  (<tt>.ppm</tt> or <tt>.pgm</tt>) file format. If the image cannot be read (file not found, 
+1 198 #endif
+1 270  *  @param  cropCornerY     y coordinate of crop region's corner
+1 180      *  </ul>
+1 171     unsigned int bytesPerRow;
+1 262  *  @param rotVal           the rotation applied
+1 156      */
+1 252  *  @param input    the input string that caused the error (NULL otherwise)
+1 164     /** Pixel depth
+1 300  *  @return a new image struct that stores the rotated image
+1 197 #pragma mark Function prototypes
+1 214  *  @return error code indicating whether the image was read successfully or not.
+1 166     unsigned int bytesPerPixel;
+1 188      *      <li><tt>(int**) raster</tt></li>
+1 183     /* Similarly here the 2D raster was cast to a void* pointer
+1 268  *  @param  argv    list of input argument to the program
+1 220  *  @param  type    one of RGBA32_RASTER, GRAY_RASTER, or FLOAT_RASTER
+1 290                       unsigned int cropWidth, unsigned int cropHeight);
+1 215  */
+1 277                       unsigned int* cropCornerX, unsigned int* cropCornerY,
+1 170      */
+1 163     unsigned int width;
+1 174      *  proper type, e.g.
+1 253  */
+1 305  *  @param  image   pointer to the RGBA32_RASTER image to rotate
+1 249  *  write to a log and "swallow" some non-critical errors.
+1 239 int writeTGA(char* filePath, ImageStruct* info);
+1 223  *          if you intend to use OpenGL to render the image.
+1 288 ImageStruct cropImage(ImageStruct *image,
+1 221  *  @param  wordSizeRowPadding word size at which rows should be rounded up.
+1 176      *      <li><tt>(int*) raster</tt></li>
+1 172     /** Pointer to the image data, cast to a void* pointer.  To
+1 185      *  <ul>
+1 160     unsigned int height;
+1 181      */
+1 159      */
+1 292  *  This function currently only works for RGBA32_RASTER images.
+1 199 //  Reads the header of a PPM/PGM file
+1 216 ImageIOErrorCode writePPM_PGM(char* filePath, ImageStruct* img);
+1 301  */
+1 251  *  @param code     the code of the error to report/process
+1 298  *  This function currently only works for RGBA32_RASTER images.
+1 247 /** In this app, just prints out an error message to the console and
+1 192     void* raster2D;
+1 289                       unsigned int cropCornerX, unsigned int cropCornerY,
+1 231  *  @return  a properly initialized ImageStruct storing the image read
+1 232  */
+1 281  *  @param  cropCornerX     x coordinate of the upper-left corner of the crop region
+1 200 char getHeaderInfoPPM_PGM_(FILE* inPPM, char* filePath,
+1 309 /** Produces a rotated copy of the input image (rotated by 270 degree clockwise).
+1 158     /** Number of rows (height) of the image
+1 286  *  @return     the new image resulting from applying the crop
+1 173      *  access the data, you would have to cast the pointer to the
+1 224  */
+1 311  *  @param  image   pointer to the RGBA32_RASTER image to rotate
+1 228  *  (<tt>.tga</tt>) file format. If the image cannot be read (file not found, invalid format, etc.)
+1 165      */
+1 236  *  @param  info        pointer to the ImageStruct of the image to write into a .tga file.
+1 219  *  @param  height  number of rows of the image
+1 275 int extractCropRegion(char* argv[],
+1 235  *  @param  filePath    path to the file to write
+1 303 /** Produces a rotated copy of the input image (rotated by 180 degree clockwise).
+1 212  *  @param  filePath    path to the file to write
+1 217 /** returns a properly initialized ImageStruct (including the 1D raster).
+1 293  *  @param  image   pointer to the RGBA32_RASTER image to copy
+1 260  *  @param inputImagePath   path to the input image
+1 276                       unsigned int imageWidth, unsigned int imageHeight,
+1 184      *  and would need to be cast back to the proper type to be used, e.g.
+1 233 ImageStruct readTGA(char* filePath);
+1 266                          RotationVal rotVal);
+1 161     /** Number of columns (width) of the image
+1 255 /** Produces a complete path to the output image file.
+1 169      *  word length (e.g. multiple of 16 or 32))
+1 259  *
+1 291 /** Produces a copy of the input image (rotation by 0).
+1 254 void errorReport(ImageIOErrorCode code, char* input);
+1 272  *  @param  cropHeight      crop region's height
+1 201                            ImageFileType* fileType,
+1 238  */
+1 234 /** Writes an image file in the <b>uncompressed</b>, un-commented TARGA (<tt>.tga</tt>) file format.
+1 189      *      <li><tt>(float**) raster</tt></li>
+1 193     
+1 222  *          You should use a padding size of 4 for a GRAY_RASTER raster
+1 261  *  @param outFolderPath    path to the output folder
+1 162      */
+1 195 #if 0
+1 279 /** Produces a new image that is a cropped part of the input image
+1 245  */
+1 225 ImageStruct newImage(unsigned int width, unsigned int height, ImageType type,
+1 207  *  @param  filePath    path to the file to read
+1 194 } ImageStruct;
+1 310  *  This function currently only works for RGBA32_RASTER images.
+1 227 /** No-frills function that reads an image file in the <b>uncompressed</b>, un-commented TARGA 
+1 203                            unsigned int* maxVal);
+1 226                      unsigned int wordSizeRowPadding);
+1 167     /** Number of bytes per row (which may be larger than
+1 302 ImageStruct rotateImage90(ImageStruct* image);
+1 168      *  bytesPerPixel * nbCols if rows are padded to a particular
+1 283  *                          (counted from the top, so height - row index - 1
+1 269  *  @param  cropCornerX     x coordinate of crop region's corner
+1 287  */
+1 179      *      <li><tt>(float*) raster</tt></li>
+1 256  *  If the input file path was ../../Images/clown and the 90-degree-rotated is to be
+1 208  *  @return  a properly initialized ImageStruct storing the image read
+1 211 /** Writes an image file in the PPM/PGM (<tt>.ppm</tt> or <tt>.pgm</tt>) file format.
+1 263  *  @return complete path to the desired output file.
+1 244  *  @return an error code
+1 294  *  @return a new image struct that stores a copy of the input image
+1 248  *  exits with the proper error code.  In a fancier version, could
+1 296 ImageStruct copyImage(ImageStruct* image);
+1 182     void* raster;
+1 265 char* produceOutFilePath(char* inputImagePath, char* outFolderPath,
+1 271  *  @param  cropWidth       crop region's width
+1 210 ImageStruct readPPM_PGM(char* filePath);
+1 243  *  @param  rotVal  pointer to a RotationVal enum variable
+1 177      *      <li><tt>(unsigned char*) raster</tt></li>
+1 218  *  @param  width   number of columns of the image
+1 206  *  invalid format, etc.) the function simply terminates execution.
+1 306  *  @return a new image struct that stores the rotated image
+1 202                            unsigned int* nbRows, unsigned int* nbCols,
+1 257  *  written the output folder path is ../Output [with or without final slash),
+1 267 /** interprets the program's input argument to determine the crop region.
+1 187      *      <li><tt>(unsigned char**) raster</tt></li>
+1 307  */
+1 204 /** No-frills function that reads an image file in the <b>uncompressed</b>, un-commented PPM/PGM 
+1 295  */
+1 229  *  the function simply terminates execution.
+1 230  *  @param  filePath    path to the file to read
+1 191      */
+1 190      *  </ul>
+1 186      *      <li><tt>(int**) raster</tt></li>
+1 304  *  This function currently only works for RGBA32_RASTER images.
+1 240 /** Processes the rotation-specifying string to determine the
+1 308 ImageStruct rotateImage180(ImageStruct* image);
+1 250  *
+1 237  *  @return 1 if the image was read successfully, 0 otherwise.
+1 178      *      <li><tt>(int*) raster</tt></li>
+1 258  *  then the output file path will be ../Output/clown [r].tga
+1 274  */
+4 703         printf("Cannot create image file %s \n", filePath);
+4 748     //------------------------------
+4 779     else
+4 680         }
+4 689 //  Description :
+4 713     if (info->type == RGBA32_RASTER)
+4 659             }
+4 634     if(info.type == RGBA32_RASTER)
+4 769         head[16] = 8 ;                          // Bits per pixel.
+4 707     //  are bad style when testing an integral value, but here only two values
+4 625     }
+4 649         else
+4 635     {
+4 697     //--------------------------------
+4 686 }   
+4 763         head[8]  = head[9] = 0 ;                // Image X origin.
+4 757         head[0]  = 0 ;                          // ID field length.
+4 778     }
+4 648         }
+4 655                 {
+4 631     //  Case of a color image
+4 699     //--------------------------------
+4 629     //  Read the pixel data
+4 759         head[2]  = 3 ;                          // Image type: gray-level, uncompressed.
+4 734         unsigned char* data  = (unsigned char*) info->raster;
+4 772         unsigned char* data  = (unsigned char*) info->raster;
+4 667     //  Case of a gray-level image
+4 652             for (int i=0; i<info.height; i++)
+4 650         {
+4 737             unsigned long offset = i*4*info->width;
+4 729         head[15] = (char) (info->height >> 8) ;     // Image height.
+4 767         head[15] = (char) (info->height >> 8) ;     // Image height.
+4 672         if(head[17]&0x20)
+4 663         //  tga files store color information in the order B-G-R
+4 755         //--------------------------------
+4 657                     dest+=4;
+4 643                 {
+4 685     return info;
+4 725         head[8]  = head[9] = 0 ;                // Image X origin.
+4 723         head[5]  = head[6] = 0 ;                // Color map lenght.
+4 700     FILE* tga_out = fopen(filePath, "wb" );
+4 761         head[5]  = head[6] = 0 ;                // Color map lenght.
+4 627     
+4 728         head[12] = (char) (info->width & 0x0FF) ;
+4 771         fwrite( head, sizeof(char), 18, tga_out );
+4 688 //  Function : writeTGA 
+4 744             }
+4 733         fwrite( head, sizeof(char), 18, tga_out );
+4 715         //--------------------------------
+4 678                 ptr -= info.width;
+4 693 //  Return value: Error code (0 = no error)
+4 702     {
+4 656                     fread(dest, 3*sizeof(char), 1, tga_in);
+4 646                 }
+4 747     }
+4 628     //--------------------------------
+4 642                 for (int j=0; j<info.width; j++)
+4 677                 fread( ptr, sizeof(char), info.width, tga_in ) ;
+4 633     //if (info.type == kTGA_COLOR) *****************************
+4 765         head[13] = (char) (info->width >> 8) ;      // Image width.
+4 673         {
+4 701     if (tga_out == NULL)
+4 683     }
+4 746         fclose( tga_out ) ;
+4 709     
+4 742                 fwrite(&data[offset], sizeof(char), 1, tga_out);
+4 666     }
+4 753         //--------------------------------
+4 745         }
+4 776         }
+4 654                 for (int j=0; j<info.width; j++)
+4 630     //--------------------------------
+4 637         if(head[17]&0x20)
+4 754         // create the header (TARGA file)
+4 741                 fwrite(&data[offset+1], sizeof(char), 1, tga_out);
+4 721         head[2]  = 2 ;                          // Image type: true color, uncompressed.
+4 773         for(int i = 0; i < info->height; i++)
+4 651             unsigned char* dest = data;
+4 756         char    head[18] ;
+4 743                 offset+=4;
+4 760         head[3]  = head[4] = 0 ;                // First color map entry.
+4 632     //------------------------  
+4 658                 }
+4 730         head[14] = (char) (info->height & 0x0FF) ;
+4 691 //   This function write out an image of type TGA (24-bit color)
+4 668     //----------------------------  
+4 758         head[1]  = 0 ;                          // Color map type.
+4 739             {
+4 647             }
+4 714     {
+4 682             fread(data, sizeof(char), imgSize, tga_in);
+4 719         head[0]  = 0 ;                          // ID field length.
+4 681         else
+4 626     info.raster = (void*) data;
+4 645                     ptr -= 4;
+4 676             {
+4 692 //  
+4 660             
+4 722         head[3]  = head[4] = 0 ;                // First color map entry.
+4 749     //  Case of a gray-level image
+4 640             for(int i = 0; i < info.height; i++)
+4 740                 fwrite(&data[offset+2], sizeof(char), 1, tga_out);
+4 766         head[12] = (char) (info->width & 0x0FF) ;
+4 727         head[13] = (char) (info->width >> 8) ;      // Image width.
+4 665         swapRGBA(data, info.height, info.width);
+4 674             unsigned char* ptr = data + imgSize - info.width;
+4 661         }
+4 735         for(int i = 0; i < info->height; i++)
+4 669     else
+4 726         head[10] = head[11] = 0 ;               // Image Y origin.
+4 750     //------------------------------
+4 706     //  Yes, I know that I tell you over and over that cascading if-else tests
+4 762         head[7]  = 0 ;                          // Color map entry size.
+4 653             {
+4 662         
+4 731         head[16] = 24 ;                         // Bits per pixel.
+4 764         head[10] = head[11] = 0 ;               // Image Y origin.
+4 716         // create the header (TARGA file)
+4 698     // open TARGA output file 
+4 644                     fread(ptr, 3*sizeof(char), 1, tga_in);
+4 679             }
+4 768         head[14] = (char) (info->height & 0x0FF) ;
+4 736         {
+4 695 int writeTGA(char* filePath, ImageStruct* info)
+4 720         head[1]  = 0 ;                          // Color map type.
+4 752     {
+4 774         {
+4 694 //----------------------------------------------------------------------*/ 
+4 711     //  Case of a color image
+4 704         return 21;
+4 624         exit(13);
+4 687 //---------------------------------------------------------------------*
+4 671         //  First check if the image is mirrored vertically (a bit setting in the header)
+4 690 //  
+4 718         char    head[18] ;
+4 777         fclose( tga_out ) ;
+4 738             for(int j = 0; j < info->width; j++)
+4 638         {
+4 636         //  First check if the image is mirrored vertically (a bit setting in the header)
+4 712     //------------------------------
+4 684     fclose( tga_in) ;
+4 696 {
+4 732         head[17] = 0 ;                          // Image descriptor bits ;
+4 641             {
+4 770         head[17] = 0 ;                          // Image descriptor bits ;
+4 775             fwrite(&data[i*info->width], sizeof(char), info->width, tga_out);
+4 639             unsigned char* ptr = data + imgSize*4 - info.bytesPerRow;
+4 751     else if (info->type == GRAY_RASTER)
+4 724         head[7]  = 0 ;                          // Color map entry size.
+4 710     //------------------------------
+4 664         //  we need to swap the Red and Blue components
+4 705     }
+4 670     {
+4 717         //--------------------------------
+4 675             for(int i = 0; i < info.height; i++)
+4 708     //  are supported.  If I ever add one more I'll use a switch, I promise.
+3 568 }
+3 537 }
+3 599     {
+3 608         info.bytesPerPixel = 1;
+3 594     info.width = (int)(((unsigned int)head[12]&0xFF) | (unsigned int)head[13]*256);
+3 474     //  Append root name to output path, add the suffix and the file extension
+3 478     //  free heap-allocated data we don't need anymore
+3 522 }
+3 595     info.height = (int)(((unsigned int)head[14]&0xFF) | (unsigned int)head[15]*256);
+3 502             rasterOut[(outImage.height-j-1)*outImage.width + i] =
+3 484 {
+3 550     {
+3 528     int* rasterIn = (int*)(image->raster);
+3 604     }
+3 567     }
+3 513     int* rasterIn = (int*)(image->raster);
+3 585         printf("Cannot open image file %s\n", filePath);
+3 476     strcat(outFilePath, ROT_SUFFIX[rotVal]);
+3 504     }
+3 518             rasterOut[(outImage.height-i-1)*outImage.width + outImage.width - j -1] =
+3 508 //  ends up at row height - i - 1, col weight - j in the output image
+3 618         exit(12);
+3 519             rasterIn[i*image->width + j];
+3 562     
+3 469     //  Produce the name of the input file minus extension
+3 556 void swapRGBA(unsigned char* theData, int height, int width)
+3 565         theData[k*4+2] = theData[k*4];
+3 472     //  chop off the extension by replacing the dot by '\0'
+3 515     for (unsigned i=0; i<image->height; i++)
+3 552         theData[k*3+2] = theData[k*3];
+3 598     if((head[2] == 2) && (head[16] == 24))
+3 490     return outImage;
+3 580     //  open TARGA input file
+3 560     
+3 486     memcpy( (char*) outImage.raster,
+3 523 //  In a rotation by 270 degree clockwise, the pixel at row i, col j in the input image
+3 584     {
+3 596     unsigned int imgSize = info.height * info.width;
+3 557 {
+3 603         data = (unsigned char*) malloc(imgSize*4);
+3 485     ImageStruct outImage = newImage(image->width, image->height, RGBA32_RASTER, 4);
+3 623         fclose(tga_in);
+3 620     if(data == NULL)
+3 602         info.bytesPerRow = 4*info.width;
+3 597     unsigned char* data;
+3 503             rasterIn[i*image->width + j];
+3 607         info.type = GRAY_RASTER;
+3 591     char    head[18] ;
+3 573 //  This function reads an image of type TGA (8 or 24 bits, uncompressed
+3 526 {
+3 576 ImageStruct readTGA(char* filePath)
+3 549     for(int k = 0; k < imgSize; k++)
+3 621     {
+3 542 //  Used because TGA stores the RGB data in reverse order (BGR)
+3 587     }
+3 612     else
+3 536     return outImage;
+3 564         temp = theData[k*4+2];
+3 605     else if((head[2] == 3) && (head[16] == 8))
+3 582     FILE* tga_in = fopen(filePath, "rb" );
+3 521     return outImage;
+3 600         info.type = RGBA32_RASTER;
+3 489     
+3 578     ImageStruct info;
+3 516     {
+3 482 }
+3 539 void swapRGBA(unsigned char* theData, int height, int width);
+3 511     ImageStruct outImage = newImage(image->width, image->height, RGBA32_RASTER, 4);
+3 617         fclose(tga_in);
+3 468         strcat(outFilePath, "/");
+3 571 //  Description :
+3 470     char* inputFileRootName = (char*) malloc(strlen(inputImagePath+k) +1);
+3 493 //  ends up at row outHeight - j - 1, col i in the output image
+3 514     int* rasterOut = (int*)(outImage.raster);
+3 505     return outImage;
+3 506 }
+3 577 {
+3 524 //  ends up at row j, col outWidth - i - 1 in the output image
+3 495 {
+3 611     }
+3 494 ImageStruct rotateImage90(ImageStruct* image)
+3 548     imgSize = height*width;
+3 475     strcat(outFilePath, inputFileRootName);
+3 614         printf("Unsuported TGA image: ");
+3 581     //--------------------------------
+3 491 }
+3 535     }
+3 579     //--------------------------------
+3 501         for (unsigned j=0; j<image->width; j++)
+3 479     free(inputFileRootName);
+3 481     return outFilePath;
+3 575 //----------------------------------------------------------------------
+3 507 //  In a rotation by 180 degree clockwise, the pixel at row i, col j in the input image
+3 517         for (unsigned j=0; j<image->width; j++)
+3 534             rasterIn[i*image->width + j];
+3 487             (char*) image->raster,
+3 563     for(int k=0; k<imgSize; k++){
+3 586         exit(11);
+3 541 //  Utility function for memory swapping
+3 616         printf("The image must be uncompressed while having 8 or 24 bits per pixel.\n");
+3 496     ImageStruct outImage = newImage(image->height, image->width, RGBA32_RASTER, 4);
+3 480     
+3 512     
+3 570 //  Function : readTGA 
+3 509 ImageStruct rotateImage180(ImageStruct* image)
+3 574 //  
+3 561     imgSize = height*width;
+3 540 //----------------------------------------------------------------------
+3 531     {
+3 530     for (unsigned i=0; i<image->height; i++)
+3 473     inputFileRootName[strlen(inputFileRootName)-4] = '\0';
+3 554     }
+3 510 {
+3 558     int imgSize;
+3 545 {
+3 529     int* rasterOut = (int*)(outImage.raster);
+3 483 ImageStruct copyImage(ImageStruct* image)
+3 551         tmp = theData[k*3+2];
+3 544 void swapRGB(unsigned char* theData, int height, int width)
+3 555 }
+3 572 //  
+3 525 ImageStruct rotateImage270(ImageStruct* image)
+3 477     strcat(outFilePath, ".tga");
+3 590     //--------------------------------
+3 553         theData[k*3] = tmp;
+3 500     {
+3 569 // ---------------------------------------------------------------------
+3 566         theData[k*4] = temp;
+3 547     unsigned char tmp;
+3 622         printf("Unable to allocate memory\n");
+3 543 //----------------------------------------------------------------------
+3 492 //  In a rotation by 90 degree clockwise, the pixel at row i, col j in the input image
+3 559     unsigned char temp;
+3 589     //  Read the header (TARGA file)
+3 497     int* rasterIn = (int*)(image->raster);
+3 538 void swapRGB(unsigned char* theData, int height, int width);
+3 601         info.bytesPerPixel = 4;
+3 583     if (tga_in == NULL)
+3 532         for (unsigned j=0; j<image->width; j++)
+3 527     ImageStruct outImage = newImage(image->height, image->width, RGBA32_RASTER, 4);
+3 593     /* Get the size of the image */
+3 533             rasterOut[j*outImage.width + outImage.width - i - 1] =
+3 498     int* rasterOut = (int*)(outImage.raster);
+3 520     }
+3 471     strcpy(inputFileRootName, inputImagePath+k);
+3 619     }
+3 592     fread( head, sizeof(char), 18, tga_in ) ;
+3 488             image->height * image->bytesPerRow);
+3 606     {
+3 546     int         imgSize;
+3 609         info.bytesPerRow = info.width;
+3 615         printf("Its type is %d and it has %d bits per pixel.\n", head[2], head[16]);
+3 499     for (unsigned i=0; i<image->height; i++)
+3 610         data = (unsigned char*) malloc(imgSize);
+3 588     //--------------------------------
+3 613     {
+2 314 ImageStruct rotateImage270(ImageStruct* image);
+2 456     //  First, find the start of the input file's name.  Start from the end
+2 412     
+2 344     char* outImagePath = produceOutFilePath(inputImagePath, outFolderPath, rot);
+2 442 }
+2 370         break;
+2 397         default:
+2 388         case ROTATE_270:
+2 367             writeTGA(outImagePath, &outImage);
+2 383             writeTGA(outImagePath, &outImage);
+2 431             *rotVal = (*rotVal + NUM_ROTATIONS - 1) % NUM_ROTATIONS;
+2 454     // Produce the name of the output file
+2 337     if (err)
+2 326 {
+2 389         {
+2 372         case ROTATE_90:
+2 417     *rotVal = NO_ROTATION;
+2 461     
+2 432             break;
+2 451 char* produceOutFilePath(char* inputImagePath, char* outFolderPath,
+2 423         {
+2 384             free(outImage.raster);
+2 335     RotationVal rot;
+2 436                 return INVALID_ROT_STRING;
+2 393         }
+2 428             
+2 350     //  fairly close to the behavior of
+2 396         //  do shut warnings up
+2 455     //-------------------------------------
+2 458     unsigned long k = strlen(inputImagePath) - 5;
+2 449     exit(code);
+2 342     
+2 382             ImageStruct outImage = rotateImage180(&image);
+2 433             
+2 450 }
+2 444 {
+2 328     if (argc != 4)
+2 402     free(image.raster);
+2 434             //  anything else is an error
+2 407 ImageIOErrorCode determineRotation(char* rotStr, RotationVal* rotVal)
+2 377         }
+2 357     //              newImage = new ImageClass(...);
+2 410     if (rotStr[0] != '-')
+2 466     //  If outFolderPath didn't end with a slash, add it
+2 440     
+2 409     //  string should start with a dash
+2 312  *  @return a new image struct that stores the rotated image
+2 317 #pragma mark Function implementations
+2 340     //  Read the image
+2 394         break;
+2 333     char* outFolderPath = argv[3];
+2 353     //              newImage = new ImageClass(...);
+2 406 }
+2 414     if (strlen(rotStr) < 2)
+2 339     
+2 348     //  It would be different if I was returning a pointer to a heap-allocated struct.
+2 465     strcpy(outFilePath, outFolderPath);
+2 360     //  same code within the cases of my sitch statement
+2 437                 
+2 385         }
+2 379         
+2 424             case 'r':
+2 448         printf("%s\n", ERROR_STR[code]);
+2 443 void errorReport(ImageIOErrorCode code, char* input)
+2 321 //        {rotation} inputImagePath outFolderPath
+2 343     //  Produce the path to the output image
+2 327     //  we need at least one argument
+2 375             writeTGA(outImagePath, &outImage);
+2 387         
+2 463     char* outFilePath = (char*) malloc(strlen(outFolderPath) +
+2 336     int err = determineRotation(argv[1], &rot);
+2 398             break;
+2 345     
+2 319 //--------------------------------------------------------------
+2 392             free(outImage.raster);
+2 355     //      C++:    ImageClas* newImage;    //  pointer to ImageClass object
+2 320 //  Main function, expecting as arguments:
+2 386         break;
+2 460         k--;
+2 420     for (unsigned int k=1; k<strlen(rotStr); k++)
+2 427             break;
+2 322 //  e.g.    l ../Images/cells.tga ../Output
+2 408 {
+2 325 int main(int argc, char* argv[])
+2 363     {
+2 364         case NO_ROTATION:
+2 381         {
+2 347     //  I cannot separate declaration and initialization of my rotated image.
+2 403     free(outImagePath);
+2 331     //  Just to look prettier in the code, I give meaningful names to my arguments
+2 374             ImageStruct outImage = rotateImage90(&image);
+2 376             free(outImage.raster);
+2 413     //  string should have characters besides the dash
+2 351     //      Java:   ImageClass newImage;    //  reference to ImageClass object
+2 330     
+2 452                          RotationVal rotVal)
+2 356     //              ...
+2 332     char* inputImagePath = argv[2];
+2 399     }
+2 366             ImageStruct outImage = copyImage(&image);
+2 459     while ((k>=1) && (inputImagePath[k-1] != '/'))
+2 411         return NO_DASH_ON_ROT_STRING;
+2 378         break;
+2 313  */
+2 422         switch (rotStr[k])
+2 354     //
+2 316 #pragma mark -
+2 361     //  The code for each case must be between braces because I declare variables within.
+2 404     
+2 380         case ROTATE_180:
+2 430             case 'L':
+2 457     //  and move left until we hit the first slash or the left end of the string.
+2 390             ImageStruct outImage = rotateImage270(&image);
+2 346     //  The way my newImage function is set up (it returns an ImageStruct as value),
+2 334     //  Interpret the rotation argument
+2 415         return INVALID_ROT_STRING;
+2 453 {
+2 365         {
+2 329         errorReport(WRONG_NUMBER_OF_ARGUMENTS, NULL);
+2 400     
+2 369         }
+2 435             default:
+2 447     else
+2 405     return 0;
+2 368             free(outImage.raster);
+2 358     //
+2 441     return NO_ERROR;
+2 425             case 'R':
+2 338         errorReport(err, argv[1]);
+2 446         printf("%s: %s\n", ERROR_STR[code], input);
+2 341     ImageStruct image = readTGA(inputImagePath);
+2 445     if (input != NULL)
+2 315 #if 0
+2 464                                        strlen(ROT_SUFFIX[rotVal]) + 5);
+2 401     //  Cleanup and terminate
+2 416     
+2 391             writeTGA(outImagePath, &outImage);
+2 438         }
+2 421     {
+2 362     switch(rot)
+2 318 #endif
+2 462     //  The +5 below is for the length of ".tga" plus the final string-terminating \0
+2 349     //  That would get closer to "object-oriented C" in the sense that it would get
+2 395         
+2 426             *rotVal = (*rotVal + 1) % NUM_ROTATIONS;
+2 323 //  It returns an error code (0 for no error)
+2 418     //  Iterate through the string, keep the count of poisitive and
+2 467     if (outFolderPath[strlen(outFolderPath)-1] != '/')
+2 324 //--------------------------------------------------------------
+2 429             case 'l':
+2 373         {
+2 371         
+2 359     //  Here, I have no choice but to have slighly different copies of basically the
+2 352     //              ...
+2 439     }
+2 419     //  negative rotations
+5 831 }
+5 877 //  readPPM()
+5 809     img.type = type;
+5 792                      unsigned int wordSizeRowPadding)
+5 804         exit(15);
+5 798     }
+5 913         //  Allocate the pixel array
+5 874     return imageOut;
+5 795     {
+5 851     if ((*cropCornerX + *cropWidth >= imageWidth) ||
+5 825             break;
+5 821         img.bytesPerPixel = sizeof(float);
+5 881 //
+5 811     {
+5 927                     fscanf(inPPM, "%d%d%d", &theRed, &theGreen, &theBlue);
+5 934         }
+5 806     ImageStruct img;
+5 828     unsigned int effectiveWidth = img.bytesPerRow / img.bytesPerPixel;  
+5 813         img.bytesPerPixel = 4;
+5 800         wordSizeRowPadding!=8 && wordSizeRowPadding!=16 &&
+5 833                       unsigned int imageWidth, unsigned int imageHeight,
+5 888 //      be \r characters), while Unix-centric stdio functions don't handle that
+5 841     //  Note: since we read into an unsigned int, a negative value would come out
+5 842     //  as a large positive value
+5 901     {
+5 904     }
+5 801         wordSizeRowPadding!=32 && wordSizeRowPadding!=64)
+5 867     {
+5 918         if (isASCII)
+5 889 //      character as an end of string.  Of course, all the code written by Unix
+5 899     FILE* inPPM = fopen(filePath, "r");
+5 848         errorReport(INVALID_CROP_HEIGHT_TYPE, argv[3]);
+5 931                     pixelData[index++] = 0xFF;  //  alpha
+5 794     if (width<3 || height<3)
+5 781         printf("Image type not supported for output\n");
+5 802     {
+5 879 //  Input:  the image to read
+5 890 //      geeks to read PPM will fail miserably if you try to run it on Windows
+5 908     int isASCII = getHeaderInfoPPM_PGM_(inPPM, filePath, &fileType,
+5 854     
+5 883 //      PPM (and its PBM/PGM brethens) is just about the stupidest image
+5 787 //---------------------------------------
+5 815         
+5 872         
+5 862     ImageStruct imageOut = newImage(cropWidth, cropHeight, RGBA32_RASTER, 1);
+5 835                       unsigned int* cropWidth, unsigned int* cropHeight)
+5 843     if ((*cropCornerX >= imageWidth) || (*cropCornerY >= imageHeight))
+5 850     //  as a large positive value
+5 797         exit(14);
+5 935         //  The image is stored in a binary format
+5 909                                         &nbRows, &nbCols, &maxVal);
+5 814         break;
+5 905     //  reset dimensions (just to play it safe)
+5 930                     pixelData[index++] = (unsigned char) (valScale*theBlue);
+5 898     // --- open file ---
+5 859                       unsigned int cropCornerX, unsigned int cropCornerY,
+5 922                 unsigned index = 4*i*nbCols;
+5 878 //  Goal :  read a 24-bit color image in PPM format (binary or ASCII)
+5 868         memcpy((unsigned char*) imageOut.raster + (imageOut.height - i - 1)*imageOut.bytesPerRow,
+5 822         break;
+5 916         float valScale = (maxVal != 255) ?  255.f/maxVal : 1.f;
+5 837     if (sscanf(argv[3], "%u", cropCornerX) != 1)
+5 785     return 0;
+5 810     switch (type)
+5 861 {
+5 846         errorReport(INVALID_CROP_WIDTH_TYPE, argv[3]);
+5 892 //
+5 834                       unsigned int* cropCornerX, unsigned int* cropCornerY,
+5 887 //      (if you are working on any other platform other than Unix, there *will*
+5 928                     pixelData[index++] = (unsigned char) (valScale*theRed);
+5 780     {
+5 882 //  Rant:
+5 807     img.width = width;
+5 819         
+5 906     unsigned int nbRows = 0, nbCols = 0, maxVal = 0;
+5 805     }
+5 816         case GRAY_RASTER:
+5 782         return 22;
+5 919         {
+5 845     if (sscanf(argv[5], "%u", cropWidth) != 1)
+5 788 //  Image utility functions.
+5 784     
+5 891 //      or on a Mac because they simply ignore \r.
+5 917         //  The image is stored in an ASCII format
+5 826     }
+5 920             for (unsigned int i = nbRows-1, invI = 0; invI < nbRows; i--, invI++)
+5 903         exit(FILE_NOT_FOUND);
+5 900     if (inPPM == NULL)
+5 884 //      file format out there.  Only a Unix programmer could possibly have
+5 812         case RGBA32_RASTER:
+5 858 ImageStruct cropImage(ImageStruct *imageIn,
+5 914         unsigned char* pixelData = (unsigned char*)calloc(4*nbCols*nbRows, 1);
+5 876 //----------------------------------------------------------------------
+5 926                     int theRed, theGreen, theBlue;
+5 852         (*cropCornerY + *cropHeight >= imageHeight))
+5 791 ImageStruct newImage(unsigned int width, unsigned int height, ImageType type,
+5 820         case FLOAT_RASTER:
+5 836 {
+5 875 }
+5 838         errorReport(INVALID_CROP_X_TYPE, argv[3]);
+5 871                cropWidth*imageIn->bytesPerPixel);
+5 817         img.bytesPerPixel = 1;
+5 873     }
+5 783     }
+5 840         errorReport(INVALID_CROP_Y_TYPE, argv[3]);
+5 832 int extractCropRegion(char* argv[],
+5 855     //  Otherwise, all is ok, go back to crop
+5 923                 
+5 824         default:
+5 793 {
+5 921             {
+5 823         
+5 799     if (wordSizeRowPadding!=1 && wordSizeRowPadding!=4 &&
+5 907     ImageFileType fileType;
+5 853         errorReport(INVALID_CROP_SIZE, NULL);
+5 844         errorReport(INVALID_CROP_CORNER, NULL);
+5 896     ImageStruct image;
+5 847     if (sscanf(argv[6], "%u", cropHeight) != 1)
+5 857 }
+5 870                                                 + cropCornerX * imageIn->bytesPerPixel,
+5 924                 for (unsigned int j = 0; j < nbCols; j++)
+5 865     //  So I need to invert the row indices.
+5 886 //      binary and ASCII stuff, and obliges you to work around the \r chars
+5 790 //---------------------------------------
+5 849     //  Note: since we read into an unsigned int, a negative value would come out
+5 880 //          the input file name.
+5 915         //  We only want to handle values in the [0, 255] range
+5 818         break;
+5 863     
+5 864     //  Beware that the images are stored upside-down from the way we view them,
+5 827     img.bytesPerRow = ((img.bytesPerPixel * width + wordSizeRowPadding - 1)/wordSizeRowPadding)*wordSizeRowPadding;
+5 856     return 0;
+5 789 //  Should be moved to some Image.c file
+5 885 //      come up with something that dumb.  It is dumb because it mixes
+5 860                       unsigned int cropWidth, unsigned int cropHeight)
+5 932                 }
+5 808     img.height = height;
+5 803         printf("wordSizeRowPadding must be one of: 1, 4, 8, 16, 32, or 64\n");
+5 866     for (unsigned int i = 0; i<cropHeight; i++)
+5 893 //----------------------------------------------------------------------
+5 912     {
+5 911     if (fileType == kPPM)
+5 796         printf("Image size should be at least 3x3\n");
+5 895 {
+5 929                     pixelData[index++] = (unsigned char) (valScale*theGreen);
+5 869                (unsigned char*) imageIn->raster + (imageIn->height - i - cropCornerY - 1)*imageIn->bytesPerRow
+5 786 }   
+5 839     if (sscanf(argv[4], "%u", cropCornerY) != 1)
+5 829     img.raster = (void*) calloc(height*effectiveWidth, img.bytesPerPixel);
+5 830     return img;
+5 894 ImageStruct readPPM_PGM(char* filePath)
+5 902         printf("File %s not found\n", filePath);
+5 910     
+5 925                 {
+5 933             }
+5 897     

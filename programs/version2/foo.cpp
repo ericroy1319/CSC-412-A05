@@ -144,19 +144,19 @@ void first_gen_child_work(std::vector<std::string>* fpaths, std::string* write_t
     }
     // if file does not exist create and write to it 
     if(file_exists == false){
-        std::ofstream CHILD(outputPath);
+        std::ofstream FILE(outputPath);
         // CHILD << "Child_"<<c_num<<" is assigned the following files:\n";
         for(int i = 0; i < len; i++){
-            CHILD<<(*fpaths)[i]<<"\n";
+            FILE<<(*fpaths)[i]<<"\n";
         }
-        CHILD.close();
+        FILE.close();
     }else{
-        std::ofstream CHILD;
-        CHILD.open(outputPath, std::ios_base::app);
+        std::ofstream FILE;
+        FILE.open(outputPath, std::ios_base::app);
         for(int i = 0; i < len;i++){
-            CHILD<<(*fpaths)[i]<<"\n";
+            FILE<<(*fpaths)[i]<<"\n";
         }
-        CHILD.close();
+        FILE.close();
     }
 }
 
@@ -170,6 +170,7 @@ void get_content(std::string fpath, std::string* content){
     (*content) = line;
     file.close();
 }
+
 // Second Gerneration of Child Output 
 void second_gen_child_work(std::string scrap_path, std::string fpath){
     // open file and read content, write to path 
@@ -214,19 +215,19 @@ void second_gen_child_work(std::string scrap_path, std::string fpath){
         }
         // if file does not exist create and write to it 
         if(file_exists == false){
-            std::ofstream CHILD(outputPath);
-            if(CHILD.is_open() == false){
+            std::ofstream FILE(outputPath);
+            if(FILE.is_open() == false){
                 cout << "FILE NOT OPEN\t" << outputPath <<  endl;
             }
             // cout << "[DEBUG] Writing Content " << content << endl;
-            CHILD << content << "\n";
-            CHILD.close();
+            FILE << content << "\n";
+            FILE.close();
         }else{
-            std::ofstream CHILD;
-            CHILD.open(outputPath, std::ios_base::app);
-            CHILD << content << "\n";
+            std::ofstream FILE;
+            FILE.open(outputPath, std::ios_base::app);
+            FILE << content << "\n";
             // cout << "[DEBUG] Writing Content " << content << endl;
-            CHILD.close();
+            FILE.close();
         }    
     }
 }    

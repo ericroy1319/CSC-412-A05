@@ -1,0 +1,156 @@
+3 568 }
+3 537 }
+3 599     {
+3 608         info.bytesPerPixel = 1;
+3 594     info.width = (int)(((unsigned int)head[12]&0xFF) | (unsigned int)head[13]*256);
+3 474     //  Append root name to output path, add the suffix and the file extension
+3 478     //  free heap-allocated data we don't need anymore
+3 522 }
+3 595     info.height = (int)(((unsigned int)head[14]&0xFF) | (unsigned int)head[15]*256);
+3 502             rasterOut[(outImage.height-j-1)*outImage.width + i] =
+3 484 {
+3 550     {
+3 528     int* rasterIn = (int*)(image->raster);
+3 604     }
+3 567     }
+3 513     int* rasterIn = (int*)(image->raster);
+3 585         printf("Cannot open image file %s\n", filePath);
+3 476     strcat(outFilePath, ROT_SUFFIX[rotVal]);
+3 504     }
+3 518             rasterOut[(outImage.height-i-1)*outImage.width + outImage.width - j -1] =
+3 508 //  ends up at row height - i - 1, col weight - j in the output image
+3 618         exit(12);
+3 519             rasterIn[i*image->width + j];
+3 562     
+3 469     //  Produce the name of the input file minus extension
+3 556 void swapRGBA(unsigned char* theData, int height, int width)
+3 565         theData[k*4+2] = theData[k*4];
+3 472     //  chop off the extension by replacing the dot by '\0'
+3 515     for (unsigned i=0; i<image->height; i++)
+3 552         theData[k*3+2] = theData[k*3];
+3 598     if((head[2] == 2) && (head[16] == 24))
+3 490     return outImage;
+3 580     //  open TARGA input file
+3 560     
+3 486     memcpy( (char*) outImage.raster,
+3 523 //  In a rotation by 270 degree clockwise, the pixel at row i, col j in the input image
+3 584     {
+3 596     unsigned int imgSize = info.height * info.width;
+3 557 {
+3 603         data = (unsigned char*) malloc(imgSize*4);
+3 485     ImageStruct outImage = newImage(image->width, image->height, RGBA32_RASTER, 4);
+3 623         fclose(tga_in);
+3 620     if(data == NULL)
+3 602         info.bytesPerRow = 4*info.width;
+3 597     unsigned char* data;
+3 503             rasterIn[i*image->width + j];
+3 607         info.type = GRAY_RASTER;
+3 591     char    head[18] ;
+3 573 //  This function reads an image of type TGA (8 or 24 bits, uncompressed
+3 526 {
+3 576 ImageStruct readTGA(char* filePath)
+3 549     for(int k = 0; k < imgSize; k++)
+3 621     {
+3 542 //  Used because TGA stores the RGB data in reverse order (BGR)
+3 587     }
+3 612     else
+3 536     return outImage;
+3 564         temp = theData[k*4+2];
+3 605     else if((head[2] == 3) && (head[16] == 8))
+3 582     FILE* tga_in = fopen(filePath, "rb" );
+3 521     return outImage;
+3 600         info.type = RGBA32_RASTER;
+3 489     
+3 578     ImageStruct info;
+3 516     {
+3 482 }
+3 539 void swapRGBA(unsigned char* theData, int height, int width);
+3 511     ImageStruct outImage = newImage(image->width, image->height, RGBA32_RASTER, 4);
+3 617         fclose(tga_in);
+3 468         strcat(outFilePath, "/");
+3 571 //  Description :
+3 470     char* inputFileRootName = (char*) malloc(strlen(inputImagePath+k) +1);
+3 493 //  ends up at row outHeight - j - 1, col i in the output image
+3 514     int* rasterOut = (int*)(outImage.raster);
+3 505     return outImage;
+3 506 }
+3 577 {
+3 524 //  ends up at row j, col outWidth - i - 1 in the output image
+3 495 {
+3 611     }
+3 494 ImageStruct rotateImage90(ImageStruct* image)
+3 548     imgSize = height*width;
+3 475     strcat(outFilePath, inputFileRootName);
+3 614         printf("Unsuported TGA image: ");
+3 581     //--------------------------------
+3 491 }
+3 535     }
+3 579     //--------------------------------
+3 501         for (unsigned j=0; j<image->width; j++)
+3 479     free(inputFileRootName);
+3 481     return outFilePath;
+3 575 //----------------------------------------------------------------------
+3 507 //  In a rotation by 180 degree clockwise, the pixel at row i, col j in the input image
+3 517         for (unsigned j=0; j<image->width; j++)
+3 534             rasterIn[i*image->width + j];
+3 487             (char*) image->raster,
+3 563     for(int k=0; k<imgSize; k++){
+3 586         exit(11);
+3 541 //  Utility function for memory swapping
+3 616         printf("The image must be uncompressed while having 8 or 24 bits per pixel.\n");
+3 496     ImageStruct outImage = newImage(image->height, image->width, RGBA32_RASTER, 4);
+3 480     
+3 512     
+3 570 //  Function : readTGA 
+3 509 ImageStruct rotateImage180(ImageStruct* image)
+3 574 //  
+3 561     imgSize = height*width;
+3 540 //----------------------------------------------------------------------
+3 531     {
+3 530     for (unsigned i=0; i<image->height; i++)
+3 473     inputFileRootName[strlen(inputFileRootName)-4] = '\0';
+3 554     }
+3 510 {
+3 558     int imgSize;
+3 545 {
+3 529     int* rasterOut = (int*)(outImage.raster);
+3 483 ImageStruct copyImage(ImageStruct* image)
+3 551         tmp = theData[k*3+2];
+3 544 void swapRGB(unsigned char* theData, int height, int width)
+3 555 }
+3 572 //  
+3 525 ImageStruct rotateImage270(ImageStruct* image)
+3 477     strcat(outFilePath, ".tga");
+3 590     //--------------------------------
+3 553         theData[k*3] = tmp;
+3 500     {
+3 569 // ---------------------------------------------------------------------
+3 566         theData[k*4] = temp;
+3 547     unsigned char tmp;
+3 622         printf("Unable to allocate memory\n");
+3 543 //----------------------------------------------------------------------
+3 492 //  In a rotation by 90 degree clockwise, the pixel at row i, col j in the input image
+3 559     unsigned char temp;
+3 589     //  Read the header (TARGA file)
+3 497     int* rasterIn = (int*)(image->raster);
+3 538 void swapRGB(unsigned char* theData, int height, int width);
+3 601         info.bytesPerPixel = 4;
+3 583     if (tga_in == NULL)
+3 532         for (unsigned j=0; j<image->width; j++)
+3 527     ImageStruct outImage = newImage(image->height, image->width, RGBA32_RASTER, 4);
+3 593     /* Get the size of the image */
+3 533             rasterOut[j*outImage.width + outImage.width - i - 1] =
+3 498     int* rasterOut = (int*)(outImage.raster);
+3 520     }
+3 471     strcpy(inputFileRootName, inputImagePath+k);
+3 619     }
+3 592     fread( head, sizeof(char), 18, tga_in ) ;
+3 488             image->height * image->bytesPerRow);
+3 606     {
+3 546     int         imgSize;
+3 609         info.bytesPerRow = info.width;
+3 615         printf("Its type is %d and it has %d bits per pixel.\n", head[2], head[16]);
+3 499     for (unsigned i=0; i<image->height; i++)
+3 610         data = (unsigned char*) malloc(imgSize);
+3 588     //--------------------------------
+3 613     {
