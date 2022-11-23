@@ -11,6 +11,8 @@ using namespace std;
 #define TERMINATE 'T'
 #define EXECUTE 'R' 
 #define CHILD 0
+#define PIPE 2
+#define SPACE ' '
 
 int main(int argc, const char* argv[]){
    
@@ -66,19 +68,20 @@ int main(int argc, const char* argv[]){
     // fd[0] == reading end of pipe 
     // fd[1] == writing end of pipe
     // Parent to Child: ptc
-    int fd_ptc[child_count+1][2];
+    int fd_ptc[child_count+1][PIPE];
     // Child to Parent: ctp 
-    int fd_ctp[2];
+    int fd_ctp[PIPE];
 
     // open pipes 
     if(pipe(fd_ctp) == -1){
-        cout<<"Pipe could not be created" << endl;
-        return(50);
+        cout<<"\n[ERROR] Pipe could not be created\n" << endl;
+        exit(5);
     }
     for(int i = 0; i <= child_count; i++){
         // create pipe 
         if(pipe(fd_ptc[i]) == -1){
-           return(50);
+           cout<<"\n[ERROR] Pipe could not be created\n" << endl;
+           exit(5);
         }
     }
     
@@ -105,11 +108,11 @@ int main(int argc, const char* argv[]){
                 // to go back to the parent via pipe for redistribution 
                 std::string send_to_process;
                 std::vector<std::string> process_files;
-                if(close(fd_ptc[i][1]) == -1){
-                    cout << "ERROR 1" << endl;
+                if(close(fd_ptc[i][WRITE]) == -1){
+                    cout << "\n[ERROR] Cannot Close Pipe\n" << endl;
                 };
-                if(close(fd_ctp[0]) == -1){
-                    cout << "ERROR 2" << endl;
+                if(close(fd_ctp[READ]) == -1){
+                    cout << "\n[ERROR] Cannot Close Pipe\n" << endl;
                 };
                 
                 //******************************//
@@ -125,12 +128,11 @@ int main(int argc, const char* argv[]){
                     
                     if(stoi(send_to_process) != i){
                         // <ACTION><PID><MESSAGE_LENGTH><MESSAGE>
-                        char action = 'R';
                         // get legnth of file path 
                         // cout << "[DEBUG] child_" << i << " is sending out " << assigned_work[i][c] <<endl;
                         int message_len = assigned_work[i][c].size();
                         // attach correct process to front of file path 
-                        std::string message = action + send_to_process + " " + std::to_string(message_len) + " " + assigned_work[i][c];
+                        std::string message = EXECUTE + send_to_process + SPACE + std::to_string(message_len) + SPACE + assigned_work[i][c];
                     
                         // create a char array to hold file path 
                         char out_message[BUFF_SIZE];
@@ -139,7 +141,7 @@ int main(int argc, const char* argv[]){
                         stpcpy(out_message, message.c_str());
                         
                         // write to parent 
-                        write(fd_ctp[1], &out_message, BUFF_SIZE);
+                        write(fd_ctp[WRITE], &out_message, BUFF_SIZE);
                         // cout << "[DEBUG] child_" << i << " is sending out " << out_message <<endl;
 
                     }else{
@@ -150,12 +152,12 @@ int main(int argc, const char* argv[]){
                 }
                 // once all of the messages have been send, send terminating message
                 char terminator = 'T';
-                write(fd_ctp[1], &terminator, BUFF_SIZE);
+                write(fd_ctp[WRITE], &terminator, BUFF_SIZE);
                 // cout << "[DEBUG] child_" << i << " is sending out " << terminator <<endl;
                 // close writing end of pipe 
-                if(close(fd_ctp[1]) == -1){
-                    cout << "ERROR 3" << endl;
-                    exit(50);
+                if(close(fd_ctp[WRITE]) == -1){
+                    cout << "\n[ERROR] Cannot Close Pipe\n" << endl;
+                    exit(5);
                 };
 
                 //******************************//
@@ -187,7 +189,7 @@ int main(int argc, const char* argv[]){
                         std::string c_num;
                         while(continueReading == true){
                             ch = read_pipe[idx];
-                            if(ch == ' '){
+                            if(ch == SPACE){
                                 idx++;
                                 continueReading = false;
                                 break;
@@ -202,7 +204,7 @@ int main(int argc, const char* argv[]){
                         std::string message_len;
                         while(continueReading == true){
                             ch = read_pipe[idx];
-                            if(ch == ' '){
+                            if(ch == SPACE){
                                 idx++;
                                 continueReading = false;
                                 break;
@@ -252,7 +254,7 @@ int main(int argc, const char* argv[]){
                         std::string destination;
                         while(continueReading == true){
                             ch = read_pipe[idx];
-                            if(ch == ' '){
+                            if(ch == SPACE){
                                 idx++;
                                 continueReading = false;
                                 break;
@@ -267,7 +269,7 @@ int main(int argc, const char* argv[]){
                         std::string message_len;
                         while(continueReading == true){
                             ch = read_pipe[idx];
-                            if(ch == ' '){
+                            if(ch == SPACE){
                                 idx++;
                                 continueReading = false;
                                 break;
@@ -290,7 +292,7 @@ int main(int argc, const char* argv[]){
                         //******************************//
                         // <ACTION><PID><MESSAGE_LENGTH><MESSAGE>
                         // char action = 'R';
-                        std::string temp = EXECUTE+destination+" "+message_len+" "+message; 
+                        std::string temp = EXECUTE + destination + SPACE + message_len + SPACE + message; 
                         char out_message[BUFF_SIZE];
                         strcpy(out_message, temp.c_str());
                         // cout << "[DEBUG] PARENT" << " is sending child_" << destination <<" "<< out_message <<endl;
@@ -357,7 +359,6 @@ int main(int argc, const char* argv[]){
     int p;
     while((p=wait(NULL))>0);
     if(pid != CHILD){
-
         parent_output(scrap_path);
     }
 
