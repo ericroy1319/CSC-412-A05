@@ -2,18 +2,11 @@
 the parent proccess needs to create, the second argument passed will 
 be the directory path to the data and the last argument passed will be 
 the path to a scrap folder*/ 
-#include "foo.cpp"
+#include "foo.hpp"
 
 
 
-#define BUFF_SIZE 256
-#define WRITE 1
-#define READ 0
-#define TERMINATE 'T'
-#define EXECUTE 'R' 
-#define CHILD 0
-#define PIPE 2
-#define SPACE ' '
+
 
 using namespace std;
 

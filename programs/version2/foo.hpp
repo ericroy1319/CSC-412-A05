@@ -1,4 +1,8 @@
-// THIS IS MY FUCNTION HEADER FILE
+/**
+ * @file foo.hpp 
+ * This header file declares all of the functions used by main.cpp
+ */
+
 #include <iostream> 
 #include <fstream>
 #include <string>
@@ -13,6 +17,23 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <fcntl.h>
+
+/// Global variable to control the size of a message sent over a pipe
+#define BUFF_SIZE 256
+/// Global variable to simplify using the write end of a pipe
+#define WRITE 1
+/// Global variable to simplify using the read end of a pipe
+#define READ 0
+/// Global variable used to signal that no more information will be send by process over pipe
+#define TERMINATE 'T'
+/// Global variable used to signal that there is information being send over the pipe by a process 
+#define EXECUTE 'R' 
+// Global variable used to simplify the determination of being within a child process or not 
+#define CHILD 0
+// Global variable used to simplify creation of a pipe array of [2] read and write 
+#define PIPE 2
+// Global varaible use to simplify the search for seperation of content within a message sent over a pipe
+#define SPACE ' '
 
 /// @brief tests to see if provided directory path points to a direcotry or not 
 /// @param dpath is the directory path to test 
