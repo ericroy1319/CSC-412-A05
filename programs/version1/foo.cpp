@@ -1,15 +1,4 @@
-#include <iostream> 
-#include <fstream>
-#include <string>
-#include <vector>
-#include <sstream>
-#include <filesystem>
-
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-
+#include "foo.hpp"
 
 // function used determine if directory exists 
 bool path_exist(const std::string &str){
@@ -113,16 +102,3 @@ void parent_output(std::string o_path){
     PARENT.close();
 }
 
-// print function for showing what files intially go to which children 
-void print_initial_split(std::vector<std::vector<std::string>> *the_split){
-    std::cout<<std::endl;
-    for(int i = 0; i < (*the_split).size(); i++){
-        std::cout<<"Child <"<<i+1 << "> will get: \t";
-        for(int j = 0; j < (*the_split)[i].size(); j++){
-            
-            std::cout << (*the_split)[i][j] << " ";
-        }
-        std::cout<<"\n";
-    }
-
-}

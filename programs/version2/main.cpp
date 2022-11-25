@@ -4,10 +4,6 @@ be the directory path to the data and the last argument passed will be
 the path to a scrap folder*/ 
 #include "foo.hpp"
 
-
-
-
-
 using namespace std;
 
 int main(int argc, const char* argv[]){
