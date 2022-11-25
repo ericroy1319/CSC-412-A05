@@ -22,9 +22,9 @@ void make_dir(std::string path){
     int check = mkdir(path.c_str(), 0777);
     // validate that direcotry was actually made 
     if(!check){
-        std::cout<<"Srap folder created within 'programs/version1' \n";
+        // std::cout<<"Srap folder created within 'programs/version1' \n";
     }else{
-        std::cout<<"Scrap folder was not created\n";
+        std::cout<<"output folder was not created\n";
         exit(5);
     }
 }

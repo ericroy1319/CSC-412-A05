@@ -14,7 +14,7 @@ void make_dir(std::string dpath){
     if(!check){
         return;
     }else{
-        std::cout<<"Scrap folder was not created\n";
+        std::cout<<"Output folder was not created\n";
         exit(5);
     }
 }

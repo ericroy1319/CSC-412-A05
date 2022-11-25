@@ -22,7 +22,7 @@ int main(int argc, const char* argv[]){
     int child_count = std::stoi(argv[1]);
     std::string data_path = argv[2]; 
     std::string scrap_path = argv[3];
-    scrap_path += "/scrap";
+    scrap_path += "/output";
     
     //-------------------------------------------------//
     //             Create scrap folder                 //
@@ -355,6 +355,9 @@ int main(int argc, const char* argv[]){
     int p;
     while((p=wait(NULL))>0);
     if(pid != CHILD){
+        //-------------------------------------------------//
+        //            Parent Output File                   //
+        //-------------------------------------------------//
         parent_output(scrap_path);
     }
 
