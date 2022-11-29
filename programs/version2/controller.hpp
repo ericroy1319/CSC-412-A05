@@ -38,30 +38,30 @@
 /// @brief tests to see if provided directory path points to a direcotry or not 
 /// @param dpath is the directory path to test 
 /// @return Returns true if direcotry exists and false if not  
-bool path_exist(const std::string &path);
+bool path_exist(const std::string &dpath);
 
 /// @brief will make a new direcotry at a given location
 /// @param dpath is the given location to make the directory
-void make_dir(std::string path);
+void make_dir(std::string dpath);
 
 /// @brief will clear all contents of a directory at a given location 
 /// @param dpath is the given location for the function to clear 
-void clear_dir(std::string path);
+void clear_dir(std::string dpath);
 
 /// @brief will count the number of files in a given directory 
 /// @param dpath the path the the directory to count it's file contents 
 /// @return the number of files within the directory 
-int file_count(std::string path);
+int file_count(std::string dpath);
 
 /// @brief will get all of the .txt files with in the directory
 /// @param dpath is the path to the directory to search
 /// @param fnames pointer to a data structure to hold the file names
-void file_names(std::string path, std::vector<std::string> *fnames);
+void file_names(std::string dpath, std::vector<std::string> *fnames);
 
 /// @brief will get all of the .txt filepaths within a given directory 
 /// @param dpath the path to the directory to search
 /// @param fpaths pointer to a data structure to hold the file paths 
-void file_paths(std::string path, std::vector<std::string> *fpaths);
+void file_paths(std::string dpath, std::vector<std::string> *fpaths);
 
 /// @brief used to convert a char[] array into a string 
 /// @param str pointer to a string to write to 

@@ -1,6 +1,6 @@
 #!/bin/bash
 # compile code from root folder 
-g++ -std=c++17 'programs/version1/main.cpp' 'programs/version1/foo.cpp' -o prog05_v1
+g++ -std=c++17 'programs/version1/main.cpp' 'programs/version1/controller.cpp' -o prog05_v1
 # exectute the program from the root folder 
 # $1 is the number of children 
 # $2 is the path to the data folder 

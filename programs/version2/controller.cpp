@@ -1,4 +1,4 @@
-#include "foo.hpp"
+#include "controller.hpp"
 using namespace std;
 
 // function used determine if directory exists 
@@ -231,8 +231,6 @@ void second_gen_child_work(std::string scrap_path, std::string fpath){
         }    
     }
 }    
-
-
 
 void determine_process_location(std::string *fpath, std::string *send_to){
     /* loop through assigned segement of files, determine where they need go,

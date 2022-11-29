@@ -1,14 +1,14 @@
-#include "foo.hpp"
+#include "controller.hpp"
 
 // function used determine if directory exists 
-bool path_exist(const std::string &str){
+bool path_exist(const std::string &dpath){
     struct stat buffer;
-    return (stat(str.c_str(), &buffer) == 0);
+    return (stat(dpath.c_str(), &buffer) == 0);
 }
 
 // make a new direcotry 
-void make_dir(std::string path){
-    int check = mkdir(path.c_str(), 0777);
+void make_dir(std::string dpath){
+    int check = mkdir(dpath.c_str(), 0777);
     // validate that direcotry was actually made 
     if(!check){
         // std::cout<<"Srap folder created within 'programs/version1' \n";
@@ -19,17 +19,17 @@ void make_dir(std::string path){
 }
 
 // clear directory 
-void clear_dir(std::string path){
+void clear_dir(std::string dpath){
         // if directory exists, clear the contents of the direcoty 
-        for (const auto& entry : std::filesystem::directory_iterator(path)){
+        for (const auto& entry : std::filesystem::directory_iterator(dpath)){
             std::filesystem::remove_all(entry.path());
         } 
 }
 
 // count the number of files in a given directory
-int file_count(std::string dir_path){
+int file_count(std::string dpath){
     int counter = 0;
-    std::filesystem::path path (dir_path.c_str());
+    std::filesystem::path path (dpath.c_str());
     for (auto& p : std::filesystem::directory_iterator(path))
         counter++;
 
@@ -37,16 +37,16 @@ int file_count(std::string dir_path){
 }
 
 // get all file names from a directory 
-void file_names(std::string dir_path, std::vector<std::string> *fnames){
-    std::filesystem::path path (dir_path.c_str());
+void file_names(std::string dpath, std::vector<std::string> *fnames){
+    std::filesystem::path path (dpath.c_str());
     for(const auto & entry : std::filesystem::directory_iterator(path)){
         (*fnames).push_back(entry.path().filename());
     }
 }
 
 void split_work(std::vector<std::vector<std::string>> *assigned_work, 
-std::vector<std::string> *f_names, int child_count){
-    int f_count = f_names->size();
+std::vector<std::string> *fnames, int child_count){
+    int f_count = fnames->size();
     int split = f_count / child_count;
     int extra_work = f_count % child_count;
     int idx = 0; 
@@ -58,12 +58,12 @@ std::vector<std::string> *f_names, int child_count){
         (*assigned_work).push_back(temp);
         for(j = 0 ; j < split; j ++){
             // add the normal work load for child 
-            (*assigned_work)[i].push_back((*f_names)[idx]);
+            (*assigned_work)[i].push_back((*fnames)[idx]);
             idx++;
         }
         // assign extra work if there is a remainder 
         if(extra_work > 0){
-            (*assigned_work)[i].push_back((*f_names)[idx]);
+            (*assigned_work)[i].push_back((*fnames)[idx]);
             extra_work--;
             idx++;
         }
